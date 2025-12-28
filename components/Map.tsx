@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -44,27 +44,39 @@ const getTypeStyles = (type: string) => {
   return { color: "text-gray-500", bg: "bg-gray-100", border: "border-gray-200", icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" };
 };
 
-const getMarkerIcon = (type: string) => {
+const getMarkerIcon = (type: string, name: string) => {
   const style = getTypeStyles(type);
 
-  // Refined Pin SVG with inner content
+  // Google-style Marker: Pin with Icon + Label below
   const html = `
-    <div class="relative flex items-center justify-center hover:scale-110 transition-transform duration-200">
-      <div class="w-8 h-8 rounded-full ${style.bg} border-2 border-white shadow-lg flex items-center justify-center z-10">
-         <svg class="w-5 h-5 ${style.color}" fill="currentColor" viewBox="0 0 24 24">
-           <path d="${style.icon}" />
-         </svg>
+    <div class="relative w-0 h-0">
+      <!-- Pin Container (Centered above anchor) -->
+      <div class="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1 cursor-pointer hover:z-30 hover:scale-110 transition-transform duration-200 z-20 filter drop-shadow-md">
+        <div class="relative">
+          <div class="w-7 h-7 rounded-full ${style.bg} border-[2.5px] border-white flex items-center justify-center">
+             <svg class="w-3.5 h-3.5 ${style.color}" fill="currentColor" viewBox="0 0 24 24">
+               <path d="${style.icon}" />
+             </svg>
+          </div>
+          <div class="absolute -bottom-[5px] left-1/2 transform -translate-x-1/2 rotate-45 w-2.5 h-2.5 ${style.bg} border-b-[2.5px] border-r-[2.5px] border-white"></div>
+        </div>
       </div>
-      <div class="absolute -bottom-1 left-1/2 transform -translate-x-1/2 rotate-45 w-3 h-3 ${style.bg} z-0"></div>
+      
+      <!-- Label Container (Centered below anchor) -->
+      <div class="absolute top-1 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 pointer-events-none">
+         <span class="text-[10px] font-bold text-white tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" 
+               style="text-shadow: 0px 1px 3px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,1);">
+           ${name}
+         </span>
+      </div>
     </div>
   `;
 
   return divIcon({
-    className: "bg-transparent border-none",
+    className: "!w-0 !h-0 bg-transparent border-none", // Force 0x0
     html: html,
-    iconSize: [32, 32],
-    iconAnchor: [16, 38], // Tip of the pin (32px height + ~6px tip)
-    popupAnchor: [0, -38], // Above the pin
+    iconSize: [0, 0],
+    iconAnchor: [0, 0],
   });
 };
 
@@ -129,10 +141,17 @@ export default function Map({
     <MapContainer
       center={[-19.51176, 29.83583]}
       zoom={16}
+      minZoom={15}
+      maxBounds={[
+        [-19.52537558894653, 29.822780000537907], // South-West
+        [-19.510376639335032, 29.841267598229543] // North-East
+      ]}
+      maxBoundsViscosity={1.0}
       scrollWheelZoom={true}
       className="h-full w-full outline-none"
       zoomControl={false}
     >
+      <ZoomControl position="bottomright" />
       <TileLayer
         attribution={tileAttribution}
         url={tileLayerUrl}
@@ -147,7 +166,7 @@ export default function Map({
           <Marker 
             key={`${building.Building}-${index}`}
             position={[building.Latitude, building.Longitude]}
-            icon={getMarkerIcon(building.Type || "Unknown")}
+            icon={getMarkerIcon(building.Type || "Unknown", building.Building)}
           >
             <Popup className="custom-popup" closeButton={false}>
               <div className="min-w-[200px] overflow-hidden rounded-lg shadow-sm font-sans mx-[-1px] my-[-1px]">

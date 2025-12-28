@@ -32,6 +32,11 @@ export default function Home() {
     }
   };
 
+  const handleClearRoute = () => {
+    setDestination(null);
+    setUserLocation(null); // Optional: Stop tracking or keep it? Let's clear to reset view state.
+  };
+
   return (
     <main className="h-screen w-screen overflow-hidden relative">
       <MapOverlay 
@@ -42,6 +47,8 @@ export default function Home() {
         onMapStyleChange={setMapStyle}
         searchQuery={searchQuery}
         onGetDirections={handleGetDirections}
+        isRouting={!!destination}
+        onClearRoute={handleClearRoute}
       />
       <MapCaller 
         searchQuery={searchQuery} 
