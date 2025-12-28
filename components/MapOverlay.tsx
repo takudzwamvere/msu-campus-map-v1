@@ -86,8 +86,8 @@ export default function MapOverlay({
         </div>
       </div>
 
-      {/* Top Right Layer Switcher */}
-      <div className="absolute top-4 right-4 z-[1000] flex flex-col gap-2">
+      {/* Layer Switcher - Bottom Right on Mobile, Top Right on Desktop */}
+      <div className="absolute bottom-20 right-4 md:top-4 md:right-4 md:bottom-auto z-[1000] flex flex-col gap-2">
         <div className="bg-white rounded-lg shadow-md p-1 flex flex-col gap-1">
           <button 
             onClick={() => onMapStyleChange('satellite')}
