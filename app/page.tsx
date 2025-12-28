@@ -4,6 +4,7 @@ import MapCaller from "@/components/MapCaller";
 import MapOverlay from "@/components/MapOverlay";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Modal from "@/components/Modal";
 import { useState } from "react";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
   const [mapStyle, setMapStyle] = useState("satellite");
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [destination, setDestination] = useState<[number, number] | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleGetDirections = (lat: number, lng: number) => {
     if (navigator.geolocation) {
@@ -19,11 +21,11 @@ export default function Home() {
           const userLat = position.coords.latitude;
           const userLng = position.coords.longitude;
           
-          // Campus Bounds
-          const minLat = -19.52537558894653;
-          const maxLat = -19.510376639335032;
-          const minLng = 29.822780000537907;
-          const maxLng = 29.841267598229543;
+          // Updated Campus Bounds
+          const minLat = -19.525414674850833;
+          const maxLat = -19.507078465507732;
+          const minLng = 29.82276282383294;
+          const maxLng = 29.846761174571597;
 
           const isWithinBounds = 
             userLat >= minLat && userLat <= maxLat && 
@@ -32,8 +34,9 @@ export default function Home() {
           if (isWithinBounds) {
             setUserLocation([userLat, userLng]);
           } else {
-             // Fallback if user is outside campus boundaries
+             // Fallback if user is outside campus boundaries (Front Gate)
             setUserLocation([-19.510271810936406, 29.841081806506132]);
+            setIsModalOpen(true);
           }
           setDestination([lat, lng]);
         },
@@ -53,7 +56,7 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col h-screen w-screen overflow-hidden bg-gray-50">
+    <main className="flex flex-col h-[100dvh] w-screen overflow-hidden bg-gray-50">
       <Header 
         searchQuery={searchQuery}
         onSearch={setSearchQuery}
@@ -78,6 +81,26 @@ export default function Home() {
       </div>
 
       <Footer />
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)}
+        title="Welcome to MSU Campus Map"
+      >
+        <div className="space-y-3">
+          <p className="text-gray-600">
+            We noticed you are currently outside the campus boundaries.
+          </p>
+          <p className="text-gray-600">
+            Directions have been generated starting from the <span className="font-semibold text-indigo-600">Main Front Gate</span> to your selected destination.
+          </p>
+          <div className="p-3 bg-blue-50 text-blue-800 text-sm rounded-lg border border-blue-100">
+            <p>
+              <strong>Note:</strong> Turn-by-turn navigation works best when you are on campus grounds.
+            </p>
+          </div>
+        </div>
+      </Modal>
     </main>
   );
 }
