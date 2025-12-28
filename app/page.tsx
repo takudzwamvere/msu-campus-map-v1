@@ -19,7 +19,25 @@ export default function Home() {
     if (navigator.geolocation) {
        navigator.geolocation.getCurrentPosition(
         (position) => {
-          setUserLocation([position.coords.latitude, position.coords.longitude]);
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+          
+          // Campus Bounds
+          const minLat = -19.52537558894653;
+          const maxLat = -19.510376639335032;
+          const minLng = 29.822780000537907;
+          const maxLng = 29.841267598229543;
+
+          const isWithinBounds = 
+            userLat >= minLat && userLat <= maxLat && 
+            userLng >= minLng && userLng <= maxLng;
+
+          if (isWithinBounds) {
+            setUserLocation([userLat, userLng]);
+          } else {
+             // Fallback if user is outside campus boundaries
+            setUserLocation([-19.510271810936406, 29.841081806506132]);
+          }
           setDestination([lat, lng]);
         },
         (error) => {

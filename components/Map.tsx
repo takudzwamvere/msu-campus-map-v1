@@ -1,15 +1,29 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
 import { CAMPUS_BUILDINGS } from "../constants/campus-data";
 import { divIcon } from "leaflet";
-
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MapRouting from "./MapRouting";
+
+const MapBoundsController = () => {
+  const map = useMap();
+  
+  useEffect(() => {
+    const bounds: [number, number][] = [
+        [-19.52537558894653, 29.822780000537907], // South-West
+        [-19.510376639335032, 29.841267598229543] // North-East
+    ];
+    map.setMaxBounds(bounds);
+    map.setMinZoom(15);
+    map.options.minZoom = 15; // Enforce on options too
+  }, [map]);
+  
+  return null;
+};
 
 const getTypeStyles = (type: string) => {
   const lowerType = type.toLowerCase();
@@ -142,15 +156,12 @@ export default function Map({
       center={[-19.51176, 29.83583]}
       zoom={16}
       minZoom={15}
-      maxBounds={[
-        [-19.52537558894653, 29.822780000537907], // South-West
-        [-19.510376639335032, 29.841267598229543] // North-East
-      ]}
       maxBoundsViscosity={1.0}
       scrollWheelZoom={true}
       className="h-full w-full outline-none"
       zoomControl={false}
     >
+      <MapBoundsController />
       <ZoomControl position="bottomright" />
       <TileLayer
         attribution={tileAttribution}
