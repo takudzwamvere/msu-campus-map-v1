@@ -2,18 +2,15 @@
 
 import MapCaller from "@/components/MapCaller";
 import MapOverlay from "@/components/MapOverlay";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import { useState } from "react";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [mapStyle, setMapStyle] = useState("satellite");
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [destination, setDestination] = useState<[number, number] | null>(null);
-
-  const handleFilter = (filter: string) => {
-    setActiveFilter(activeFilter === filter ? null : filter);
-  };
 
   const handleGetDirections = (lat: number, lng: number) => {
     if (navigator.geolocation) {
@@ -52,30 +49,35 @@ export default function Home() {
 
   const handleClearRoute = () => {
     setDestination(null);
-    setUserLocation(null); // Optional: Stop tracking or keep it? Let's clear to reset view state.
+    setUserLocation(null); 
   };
 
   return (
-    <main className="h-screen w-screen overflow-hidden relative">
-      <MapOverlay 
-        onSearch={setSearchQuery} 
-        activeFilter={activeFilter} 
-        onFilter={handleFilter}
-        mapStyle={mapStyle}
-        onMapStyleChange={setMapStyle}
+    <main className="flex flex-col h-screen w-screen overflow-hidden bg-gray-50">
+      <Header 
         searchQuery={searchQuery}
+        onSearch={setSearchQuery}
         onGetDirections={handleGetDirections}
         isRouting={!!destination}
         onClearRoute={handleClearRoute}
       />
-      <MapCaller 
-        searchQuery={searchQuery} 
-        activeFilter={activeFilter}
-        mapStyle={mapStyle}
-        userLocation={userLocation}
-        destination={destination}
-        onGetDirections={handleGetDirections}
-      />
+      
+      <div className="relative flex-1 w-full overflow-hidden">
+        <MapOverlay 
+          mapStyle={mapStyle}
+          onMapStyleChange={setMapStyle}
+        />
+        <MapCaller 
+          searchQuery={searchQuery} 
+          activeFilter={null}
+          mapStyle={mapStyle}
+          userLocation={userLocation}
+          destination={destination}
+          onGetDirections={handleGetDirections}
+        />
+      </div>
+
+      <Footer />
     </main>
   );
 }

@@ -14,8 +14,8 @@ const MapBoundsController = () => {
   
   useEffect(() => {
     const bounds: [number, number][] = [
-        [-19.52537558894653, 29.822780000537907], // South-West
-        [-19.510376639335032, 29.841267598229543] // North-East
+        [-19.525414674850833, 29.82276282383294], // South-West
+        [-19.507078465507732, 29.846761174571597] // North-East
     ];
     map.setMaxBounds(bounds);
     map.setMinZoom(15);

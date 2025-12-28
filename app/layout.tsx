@@ -23,6 +23,11 @@ export default function RootLayout({
       <body
         className={`${poppins.variable} antialiased`}
       >
+        <style dangerouslySetInnerHTML={{ __html: `
+          @media (max-width: 768px) {
+            .leaflet-control-attribution { display: none !important; }
+          }
+        `}} />
         {children}
       </body>
     </html>
