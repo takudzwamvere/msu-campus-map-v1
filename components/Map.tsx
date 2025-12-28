@@ -70,9 +70,21 @@ const getMarkerIcon = (type: string) => {
 
 
 
-export default function Map({ searchQuery, activeFilter, mapStyle }: { searchQuery: string; activeFilter: string | null; mapStyle: string }) {
-  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
-  const [destination, setDestination] = useState<[number, number] | null>(null);
+export default function Map({ 
+  searchQuery, 
+  activeFilter, 
+  mapStyle,
+  userLocation,
+  destination,
+  onGetDirections
+}: { 
+  searchQuery: string; 
+  activeFilter: string | null; 
+  mapStyle: string;
+  userLocation: [number, number] | null;
+  destination: [number, number] | null;
+  onGetDirections: (lat: number, lng: number) => void;
+}) {
 
   // Filter buildings
   const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
@@ -100,23 +112,6 @@ export default function Map({ searchQuery, activeFilter, mapStyle }: { searchQue
 
     return true;
   });
-
-  const handleGetDirections = (lat: number, lng: number) => {
-    if (navigator.geolocation) {
-       navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation([position.coords.latitude, position.coords.longitude]);
-          setDestination([lat, lng]);
-        },
-        (error) => {
-          console.error("Error getting location:", error);
-          alert("Unable to retrieve your location. Please check your permissions.");
-        }
-      );
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
-  };
 
   // Determine Tile Layer Props based on mapStyle
   let tileLayerUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
@@ -176,7 +171,7 @@ export default function Map({ searchQuery, activeFilter, mapStyle }: { searchQue
                     )}
 
                     <button 
-                      onClick={() => handleGetDirections(building.Latitude, building.Longitude)}
+                      onClick={() => onGetDirections(building.Latitude, building.Longitude)}
                       className={`inline-flex items-center text-xs font-semibold ${style.color} hover:underline mt-1 bg-transparent border-none p-0 cursor-pointer`}
                     >
                       <span>Get Directions</span>

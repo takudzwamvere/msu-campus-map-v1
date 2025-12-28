@@ -6,6 +6,9 @@ interface MapProps {
   searchQuery: string;
   activeFilter: string | null;
   mapStyle: string;
+  userLocation: [number, number] | null;
+  destination: [number, number] | null;
+  onGetDirections: (lat: number, lng: number) => void;
 }
 
 const Map = dynamic(() => import("./Map"), {

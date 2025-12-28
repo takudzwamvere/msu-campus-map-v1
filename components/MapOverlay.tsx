@@ -1,18 +1,54 @@
-"use client";
+import { CAMPUS_BUILDINGS } from "../constants/campus-data";
+import { useState, useEffect, useRef } from "react";
 
 export default function MapOverlay({ 
   onSearch, 
   activeFilter, 
   onFilter,
   mapStyle,
-  onMapStyleChange
+  onMapStyleChange,
+  searchQuery,
+  onGetDirections
 }: { 
   onSearch: (query: string) => void;
   activeFilter: string | null;
   onFilter: (filter: string) => void;
   mapStyle: string;
   onMapStyleChange: (style: string) => void;
+  searchQuery: string;
+  onGetDirections: (lat: number, lng: number) => void;
 }) {
+  const [suggestions, setSuggestions] = useState<typeof CAMPUS_BUILDINGS>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (searchQuery.length > 1) {
+      const q = searchQuery.toLowerCase();
+      const filtered = CAMPUS_BUILDINGS.filter(b => 
+        b.Building.toLowerCase().includes(q) || 
+        (b.Description && b.Description.toLowerCase().includes(q))
+      ).slice(0, 5); // Limit to top 5
+      setSuggestions(filtered);
+      setShowSuggestions(true);
+    } else {
+      setSuggestions([]);
+      setShowSuggestions(false);
+    }
+  }, [searchQuery]);
+
+  // Click outside to close suggestions
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]);
   const FILTERS = [
     { label: "All", key: "all" },
     { label: "Hostels", key: "dormitory" },
@@ -47,25 +83,55 @@ export default function MapOverlay({
           <input
             type="text"
             placeholder="Search campus..."
+            value={searchQuery}
             onChange={(e) => onSearch(e.target.value)}
+            onFocus={() => { if(searchQuery.length > 1) setShowSuggestions(true); }}
             className="w-full bg-transparent px-2 py-1 text-base text-gray-900 placeholder-gray-500 outline-none"
           />
-          <button className="p-2 text-gray-500 hover:text-blue-600">
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
+          {searchQuery && (
+            <button onClick={() => { onSearch(""); setShowSuggestions(false); }} className="p-2 text-gray-400 hover:text-gray-600">
+               <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          )}
         </div>
+        
+        {/* Search Suggestions Dropdown */}
+        {showSuggestions && suggestions.length > 0 && (
+          <div ref={wrapperRef} className="absolute top-full left-0 mt-2 w-full bg-white rounded-lg shadow-xl overflow-hidden z-[1001] border border-gray-100">
+            {suggestions.map((item, idx) => (
+              <div 
+                key={idx} 
+                className="flex items-center justify-between p-3 hover:bg-gray-50 border-b border-gray-50 last:border-b-0 transition-colors"
+              >
+                <div 
+                  className="flex-1 cursor-pointer"
+                  onClick={() => {
+                    onSearch(item.Building);
+                    setShowSuggestions(false);
+                  }}
+                >
+                  <p className="font-semibold text-sm text-gray-800">{item.Building}</p>
+                  <p className="text-xs text-gray-500 truncate max-w-[200px]">{item.Type} {item.Description ? `• ${item.Description}` : ''}</p>
+                </div>
+                <button 
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onGetDirections(item.Latitude, item.Longitude);
+                    onSearch(item.Building); // Also select it
+                    setShowSuggestions(false);
+                  }}
+                  className="ml-2 p-1.5 bg-blue-50 text-blue-600 rounded-full hover:bg-blue-100 transition-colors"
+                  title="Get Directions"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="flex gap-2 px-1 overflow-x-auto pb-2 scrollbar-hide mask-fade-right">
           {FILTERS.map((filter) => {
              const isActive = activeFilter === filter.key || (filter.key === 'all' && !activeFilter);
