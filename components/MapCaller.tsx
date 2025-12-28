@@ -2,6 +2,12 @@
 
 import dynamic from "next/dynamic";
 
+interface MapProps {
+  searchQuery: string;
+  activeFilter: string | null;
+  mapStyle: string;
+}
+
 const Map = dynamic(() => import("./Map"), {
   ssr: false,
   loading: () => (
@@ -11,4 +17,6 @@ const Map = dynamic(() => import("./Map"), {
   ),
 });
 
-export default Map;
+export default function MapCaller(props: MapProps) {
+  return <Map {...props} />;
+}

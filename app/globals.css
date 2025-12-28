@@ -26,12 +26,16 @@ body {
 
 /* Custom Popup Override */
 .leaflet-popup-content-wrapper {
-  background: white !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
-  color: #171717 !important;
-  font-family: var(--font-poppins), sans-serif !important;
   padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 8px !important;
+  border: none !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  width: auto !important;
+  line-height: inherit;
 }
 
 .leaflet-popup-tip {
