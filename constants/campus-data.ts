@@ -228,7 +228,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Japan Dining Hall",
         "Latitude": -19.51236986656543,
         "Longitude": 29.83167069215726,
-        "Description": "Dinning Hall For Japan Boys' Dormitories",
+        "Description": "Dining Hall For Japan Boys' Dormitories",
         "Poly": "Japan",
         "Campus": "Gweru",
         "Type": "Dining Hall"
@@ -774,7 +774,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Residency"
     },
     {
-        "Building": "Disality Resource Centre",
+        "Building": "Disability Resource Centre",
         "Latitude": -19.51732074919259,
         "Longitude": 29.83740872698581,
         "Description": null,
@@ -791,15 +791,7 @@ export const CAMPUS_BUILDINGS = [
         "Campus": "Gweru",
         "Type": "Music"
     },
-    {
-        "Building": "Something",
-        "Latitude": -19.51836248506878,
-        "Longitude": 29.8368791731329,
-        "Description": null,
-        "Poly": null,
-        "Campus": "Gweru",
-        "Type": "???"
-    },
+
     {
         "Building": "Students Resources Centre",
         "Latitude": -19.514619020733708,

@@ -25,37 +25,39 @@ const MapBoundsController = () => {
   return null;
 };
 
+const CATEGORY_STYLES = [
+  {
+    keywords: ["dormitory", "hostel"],
+    styles: { color: "text-indigo-600", bg: "bg-indigo-100", border: "border-indigo-200", icon: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" }
+  },
+  {
+    keywords: ["class", "lab", "theatre", "library", "workshop"],
+    styles: { color: "text-emerald-600", bg: "bg-emerald-100", border: "border-emerald-200", icon: "M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" }
+  },
+  {
+    keywords: ["gym", "pool", "sports", "basketball", "volleyball", "tennis", "football", "leisure", "garden", "cattle"],
+    styles: { color: "text-orange-600", bg: "bg-orange-100", border: "border-orange-200", icon: "M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z" }
+  },
+  {
+    keywords: ["dining", "cafeteria"],
+    styles: { color: "text-rose-600", bg: "bg-rose-100", border: "border-rose-200", icon: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" }
+  },
+  {
+    keywords: ["music", "disability", "residency", "clinic", "health"],
+    styles: { color: "text-violet-600", bg: "bg-violet-100", border: "border-violet-200", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }
+  }
+];
+
 const getTypeStyles = (type: string) => {
   const lowerType = type.toLowerCase();
+  const match = CATEGORY_STYLES.find(cat => cat.keywords.some(k => lowerType.includes(k)));
   
-  if (lowerType.includes("dormitory") || lowerType.includes("hostel")) {
-    return { color: "text-indigo-600", bg: "bg-indigo-100", border: "border-indigo-200", icon: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" };
-  }
-  if (lowerType.includes("class") || lowerType.includes("lab") || lowerType.includes("theatre") || lowerType.includes("library") || lowerType.includes("workshop")) {
-    return { color: "text-emerald-600", bg: "bg-emerald-100", border: "border-emerald-200", icon: "M12 14l9-5-9-5-9 5 9 5z M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" };
-  }
-  if (
-    lowerType.includes("gym") || 
-    lowerType.includes("pool") || 
-    lowerType.includes("sports") ||
-    lowerType.includes("basketball") ||
-    lowerType.includes("volleyball") ||
-    lowerType.includes("tennis") ||
-    lowerType.includes("football") ||
-    lowerType.includes("leisure") ||
-    lowerType.includes("garden") ||
-    lowerType.includes("cattle")
-  ) {
-    return { color: "text-orange-600", bg: "bg-orange-100", border: "border-orange-200", icon: "M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z M21 12a9 9 0 11-18 0 9 9 0 0118 0z" };
-  }
-  if (lowerType.includes("dining") || lowerType.includes("cafeteria")) {
-    return { color: "text-rose-600", bg: "bg-rose-100", border: "border-rose-200", icon: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" };
-  }
-  if (lowerType.includes("music") || lowerType.includes("disability") || lowerType.includes("residency") || lowerType.includes("clinic") || lowerType.includes("health")) {
-    return { color: "text-violet-600", bg: "bg-violet-100", border: "border-violet-200", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" };
-  }
-  
-  return { color: "text-gray-500", bg: "bg-gray-100", border: "border-gray-200", icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" };
+  return match?.styles || { 
+    color: "text-gray-500", 
+    bg: "bg-gray-100", 
+    border: "border-gray-200", 
+    icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" 
+  };
 };
 
 const getMarkerIcon = (type: string, name: string) => {
@@ -64,7 +66,6 @@ const getMarkerIcon = (type: string, name: string) => {
   // Google-style Marker: Pin with Icon + Label below
   const html = `
     <div class="relative w-0 h-0">
-      <!-- Pin Container (Centered above anchor) -->
       <div class="absolute bottom-0 left-1/2 -translate-x-1/2 -translate-y-1 cursor-pointer hover:z-30 hover:scale-110 transition-transform duration-200 z-20 filter drop-shadow-md">
         <div class="relative">
           <div class="w-7 h-7 rounded-full ${style.bg} border-[2.5px] border-white flex items-center justify-center">
@@ -76,7 +77,6 @@ const getMarkerIcon = (type: string, name: string) => {
         </div>
       </div>
       
-      <!-- Label Container (Centered below anchor) -->
       <div class="absolute top-1 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 pointer-events-none">
          <span class="text-[10px] font-bold text-white tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" 
                style="text-shadow: 0px 1px 3px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,1);">
@@ -114,7 +114,6 @@ export default function Map({
 
   // Filter buildings
   const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
-    // 1. Filter by Search Query
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       const matchName = building.Building.toLowerCase().includes(q);
@@ -122,7 +121,6 @@ export default function Map({
       if (!matchName && !matchDesc) return false;
     }
 
-    // 2. Filter by Category
     if (activeFilter) {
       const type = (building.Type || "").toLowerCase();
       
@@ -132,7 +130,6 @@ export default function Map({
       if (activeFilter === "sports") {
         return type.includes("gym") || type.includes("pool") || type.includes("court") || type.includes("pitch") || type.includes("field") || type.includes("sport"); 
       }
-      // General match for other keys (dormitory, dining, admin, car park, toilet)
       return type.includes(activeFilter);
     }
 
