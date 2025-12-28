@@ -180,29 +180,27 @@ export default function Map({
             icon={getMarkerIcon(building.Type || "Unknown", building.Building)}
           >
             <Popup className="custom-popup" closeButton={false}>
-              <div className="min-w-[200px] overflow-hidden rounded-lg shadow-sm font-sans mx-[-1px] my-[-1px]">
-                  {/* Header Strip */}
-                  <div className={`h-2 w-full ${style.bg}`}></div>
+              <div className="min-w-[200px] overflow-hidden shadow-sm font-sans">
                   
                   <div className="p-3 bg-white">
                     <div className="flex items-start justify-between gap-2 mb-1">
-                      <h3 className="font-bold text-base text-gray-900 leading-tight">
+                      <h3 className="text-base text-gray-900 leading-tight">
                         {building.Building}
                       </h3>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full ${style.bg} ${style.color}`}>
+                      <span className={`text-[11px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded-xs ${style.bg} ${style.color}`}>
                         {building.Type}
                       </span>
                     </div>
                     
                     {building.Description && (
-                      <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                      <p className="text-sm text-gray-600 leading-relaxed mb-3">
                         {building.Description}
                       </p>
                     )}
 
                     <button 
                       onClick={() => onGetDirections(building.Latitude, building.Longitude)}
-                      className={`inline-flex items-center text-xs font-semibold ${style.color} hover:underline mt-1 bg-transparent border-none p-0 cursor-pointer`}
+                      className={`inline-flex items-center text-sm ${style.color} hover:underline mt-1 bg-transparent border-none p-0 cursor-pointer`}
                     >
                       <span>Get Directions</span>
                       <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

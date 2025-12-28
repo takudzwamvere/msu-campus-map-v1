@@ -12,9 +12,8 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
 
   return (
     <div className="fixed inset-0 z-[3000] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-          <h3 className="font-bold text-lg text-gray-900">{title}</h3>
+      <div className="bg-white max-w-md w-full overflow-hidden animate-in zoom-in-95 duration-200">
+        <div className="px-6 py-4 flex items-end justify-end">
           <button 
             onClick={onClose}
             className="text-gray-400 hover:text-gray-600 p-1 rounded-full hover:bg-gray-100 transition-colors"
@@ -27,10 +26,10 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
         <div className="p-6">
           {children}
         </div>
-        <div className="px-6 py-4 bg-gray-50 flex justify-end">
+        <div className="px-6 py-4 bg-gray-50 flex justify-center">
           <button 
             onClick={onClose}
-            className="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 transition-colors shadow-sm"
+            className="px-4 py-2 bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors shadow-sm"
           >
             Understood
           </button>

@@ -85,16 +85,15 @@ export default function Home() {
       <Modal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
-        title="Welcome to MSU Campus Map"
+        title=""
       >
         <div className="space-y-3">
-          <p className="text-gray-600">
-            We noticed you are currently outside the campus boundaries.
+          <p>It seems as if you are currently outside the campus boundaries.
           </p>
           <p className="text-gray-600">
-            Directions have been generated starting from the <span className="font-semibold text-indigo-600">Main Front Gate</span> to your selected destination.
+            In order to avoid generating directions from outside the campus, directions have been generated starting from the <span className="font-semibold text-indigo-600">Main Front Gate</span> to your selected destination.
           </p>
-          <div className="p-3 bg-blue-50 text-blue-800 text-sm rounded-lg border border-blue-100">
+          <div className="p-3 bg-blue-50 text-blue-800 text-sm border border-blue-100">
             <p>
               <strong>Note:</strong> Turn-by-turn navigation works best when you are on campus grounds.
             </p>
