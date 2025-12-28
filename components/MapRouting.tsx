@@ -31,12 +31,13 @@ export default function MapRouting({
       showAlternatives: false,
       fitSelectedRoutes: true,
       lineOptions: {
-        styles: [{ color: "#3b82f6", weight: 5, opacity: 0.7 }]
+        styles: [{ color: "#3b82f6", weight: 5, opacity: 0.7 }],
+        extendToWaypoints: true,
+        missingRouteTolerance: 0
       },
       // @ts-ignore - CreateGeocoder is optional and we skip it to keep it simple/dependency-free for now
       geocoder: null, 
       addWaypoints: false,
-      draggableWaypoints: false,
       collapsible: true, // Allow collapsing the instructions
     }).addTo(map);
 
