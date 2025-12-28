@@ -7,6 +7,10 @@ import "leaflet-defaulticon-compatibility";
 import { CAMPUS_BUILDINGS } from "../constants/campus-data";
 import { divIcon } from "leaflet";
 
+
+import { useState } from "react";
+import MapRouting from "./MapRouting";
+
 const getTypeStyles = (type: string) => {
   const lowerType = type.toLowerCase();
   
@@ -67,6 +71,9 @@ const getMarkerIcon = (type: string) => {
 
 
 export default function Map({ searchQuery, activeFilter, mapStyle }: { searchQuery: string; activeFilter: string | null; mapStyle: string }) {
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [destination, setDestination] = useState<[number, number] | null>(null);
+
   // Filter buildings
   const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
     // 1. Filter by Search Query
@@ -94,6 +101,23 @@ export default function Map({ searchQuery, activeFilter, mapStyle }: { searchQue
     return true;
   });
 
+  const handleGetDirections = (lat: number, lng: number) => {
+    if (navigator.geolocation) {
+       navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation([position.coords.latitude, position.coords.longitude]);
+          setDestination([lat, lng]);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          alert("Unable to retrieve your location. Please check your permissions.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
+
   // Determine Tile Layer Props based on mapStyle
   let tileLayerUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   let tileAttribution = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -118,6 +142,10 @@ export default function Map({ searchQuery, activeFilter, mapStyle }: { searchQue
         attribution={tileAttribution}
         url={tileLayerUrl}
       />
+      
+      {/* Routing Logic */}
+      <MapRouting userLocation={userLocation} destination={destination} />
+
       {filteredBuildings.map((building, index) => {
         const style = getTypeStyles(building.Type || "Unknown");
         return (
@@ -147,17 +175,16 @@ export default function Map({ searchQuery, activeFilter, mapStyle }: { searchQue
                       </p>
                     )}
 
-                    <a 
-                      href={`https://www.google.com/maps/search/?api=1&query=${building.Latitude},${building.Longitude}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={`inline-flex items-center text-xs font-semibold ${style.color} hover:underline mt-1`}
+                    <button 
+                      onClick={() => handleGetDirections(building.Latitude, building.Longitude)}
+                      className={`inline-flex items-center text-xs font-semibold ${style.color} hover:underline mt-1 bg-transparent border-none p-0 cursor-pointer`}
                     >
                       <span>Get Directions</span>
                       <svg className="w-3 h-3 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                       </svg>
-                    </a>
+                    </button>
                   </div>
               </div>
             </Popup>
