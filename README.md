@@ -10,8 +10,11 @@ This is an interactive, open-source campus map for Midlands State University, bu
 
 
 - **Multiple Map Styles**: Switch between **Standard** (OpenStreetMap), **Satellite** (Esri World Imagery), and **Minimal** (CartoDB) views to suit your preference.
+Satelite View:
 <img width="1363" height="696" alt="landing-layer" src="https://github.com/user-attachments/assets/05ba0229-848a-4208-bbd1-aff58ba2102f" />
+Map View:
 <img width="1363" height="696" alt="map-layer" src="https://github.com/user-attachments/assets/bcf7fc18-6d89-4881-b765-704d75287479" />
+Minimal View:
 <img width="1365" height="701" alt="minimal-layer" src="https://github.com/user-attachments/assets/93b3aef8-2afa-4928-b52f-3ff88b23ef56" />
 
 - **Turn-by-Turn Navigation**: Get precise routing instructions from your current location (or the Main Gate for those who use the site off campus) to any selected destination.
