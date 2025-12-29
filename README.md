@@ -1,15 +1,20 @@
 # MSU Campus Map
 
-An interactive, open-source campus map for Midlands State University, built with [Next.js](https://nextjs.org) and [Leaflet](https://leafletjs.com/). Designed to help students, staff, and visitors navigate the campus with ease, helping them find buildings, facilities, and getting turn-by-turn directions.
+This is an interactive, open-source campus map for Midlands State University, built with [Next.js](https://nextjs.org) and [Leaflet](https://leafletjs.com/). Designed to help students, staff, and visitors navigate the campus with ease, helping them find buildings, facilities, and getting turn-by-turn directions. So far the only included campus is the Gweru main campus, more features and capuses will be added as the project grows.
 
-## Features
+## Key Features
 
-- 🗺️ **Interactive Map**: Seamlessly pan, zoom, and explore the detailed campus layout.
-- 🔍 **Smart Search**: Quickly find buildings by name, type, or description.
-- 🏷️ **Category Filtering**: Filter locations by specific types such as _Academic_, _Sports_, _Residence_, _Dining_, and more.
-- 📍 **Turn-by-Turn Navigation**: Get precise routing instructions from your current location (or the Main Gate) to any selected destination.
-- 🎨 **Multiple Map Styles**: Switch between **Standard** (OpenStreetMap), **Satellite** (Esri World Imagery), and **Minimal** (CartoDB) views to suit your preference.
-- 📱 **Mobile First Design**: A fully responsive interface that provides a native-app-like experience on smartphones.
+- **Interactive Map**: Seamlessly pan, zoom, and explore the detailed campus layout.
+- **Smart Search**: Quickly find buildings and locations by name, type, or description.
+- **Turn-by-Turn Navigation**: Get precise routing instructions from your current location (or the Main Gate for those who use the site off campus) to any selected destination.
+<img width="1365" height="701" alt="location-rate-limiting" src="https://github.com/user-attachments/assets/8dfbf185-f677-49f0-aa26-cde86aafb41d" />
+
+- **Multiple Map Styles**: Switch between **Standard** (OpenStreetMap), **Satellite** (Esri World Imagery), and **Minimal** (CartoDB) views to suit your preference.
+<img width="1363" height="696" alt="landing-layer" src="https://github.com/user-attachments/assets/05ba0229-848a-4208-bbd1-aff58ba2102f" />
+<img width="1363" height="696" alt="map-layer" src="https://github.com/user-attachments/assets/bcf7fc18-6d89-4881-b765-704d75287479" />
+<img width="1365" height="701" alt="minimal-layer" src="https://github.com/user-attachments/assets/93b3aef8-2afa-4928-b52f-3ff88b23ef56" />
+
+- **Mobile First Design**: A fully responsive interface that provides a native-app-like experience on smartphones.
 
 ## Tech Stack
 
