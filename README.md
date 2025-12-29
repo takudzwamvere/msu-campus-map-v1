@@ -6,13 +6,16 @@ This is an interactive, open-source campus map for Midlands State University, bu
 
 - **Interactive Map**: Seamlessly pan, zoom, and explore the detailed campus layout.
 - **Smart Search**: Quickly find buildings and locations by name, type, or description.
-- **Turn-by-Turn Navigation**: Get precise routing instructions from your current location (or the Main Gate for those who use the site off campus) to any selected destination.
-<img width="1365" height="701" alt="location-rate-limiting" src="https://github.com/user-attachments/assets/8dfbf185-f677-49f0-aa26-cde86aafb41d" />
+<img width="1365" height="701" alt="route-generation" src="https://github.com/user-attachments/assets/1ca8530c-09a6-4b89-bb8a-9576c034552e" />
+
 
 - **Multiple Map Styles**: Switch between **Standard** (OpenStreetMap), **Satellite** (Esri World Imagery), and **Minimal** (CartoDB) views to suit your preference.
 <img width="1363" height="696" alt="landing-layer" src="https://github.com/user-attachments/assets/05ba0229-848a-4208-bbd1-aff58ba2102f" />
 <img width="1363" height="696" alt="map-layer" src="https://github.com/user-attachments/assets/bcf7fc18-6d89-4881-b765-704d75287479" />
 <img width="1365" height="701" alt="minimal-layer" src="https://github.com/user-attachments/assets/93b3aef8-2afa-4928-b52f-3ff88b23ef56" />
+
+- **Turn-by-Turn Navigation**: Get precise routing instructions from your current location (or the Main Gate for those who use the site off campus) to any selected destination.
+<img width="1365" height="701" alt="location-rate-limiting" src="https://github.com/user-attachments/assets/8dfbf185-f677-49f0-aa26-cde86aafb41d" />
 
 - **Mobile First Design**: A fully responsive interface that provides a native-app-like experience on smartphones.
 
