@@ -1,36 +1,67 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MSU Campus Map
+
+An interactive, open-source campus map for Midlands State University, built with [Next.js](https://nextjs.org) and [Leaflet](https://leafletjs.com/). Designed to help students, staff, and visitors navigate the campus with ease, helping them find buildings, facilities, and getting turn-by-turn directions.
+
+## Features
+
+- 🗺️ **Interactive Map**: Seamlessly pan, zoom, and explore the detailed campus layout.
+- 🔍 **Smart Search**: Quickly find buildings by name, type, or description.
+- 🏷️ **Category Filtering**: Filter locations by specific types such as _Academic_, _Sports_, _Residence_, _Dining_, and more.
+- 📍 **Turn-by-Turn Navigation**: Get precise routing instructions from your current location (or the Main Gate) to any selected destination.
+- 🎨 **Multiple Map Styles**: Switch between **Standard** (OpenStreetMap), **Satellite** (Esri World Imagery), and **Minimal** (CartoDB) views to suit your preference.
+- 📱 **Mobile First Design**: A fully responsive interface that provides a native-app-like experience on smartphones.
+
+## Tech Stack
+
+This project leverages modern web technologies to deliver a fast and robust mapping experience:
+
+- **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
+- **Frontend Library**: [React 19](https://react.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Mapping**: [React Leaflet](https://react-leaflet.js.org/) & [Leaflet](https://leafletjs.com/)
+- **Routing**: [Leaflet Routing Machine](https://www.liedman.net/leaflet-routing-machine/)
 
 ## Getting Started
 
-First, run the development server:
+To run this project locally on your machine, follow these steps:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1.  **Clone the repository**:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+    ```bash
+    git clone https://github.com/takudzwamvere/msu-campus-map-v1.git
+    cd msu-campus-map-v1
+    ```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2.  **Install dependencies**:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    ```bash
+    npm install
+    # or
+    yarn install
+    # or
+    pnpm install
+    ```
 
-## Learn More
+3.  **Run the development server**:
 
-To learn more about Next.js, take a look at the following resources:
+    ```bash
+    npm run dev
+    ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+4.  **Open the application**:
+    Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Resources & Credits
 
-## Deploy on Vercel
+This project makes use of several open-source resources and data providers:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Map Data**: © [OpenStreetMap contributors](https://www.openstreetmap.org/copyright).
+- **Satellite Imagery**: Tiles © [Esri](https://www.esri.com/) — Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community.
+- **Minimal Tiles**: © [CartoDB](https://carto.com/attributions).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+<p align="center">
+  Built with ❤️ for the MSU Community
+</p>
