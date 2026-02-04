@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 interface MapProps {
   searchQuery: string;
   activeFilter: string | null;
-  mapStyle: string;
   userLocation: [number, number] | null;
   destination: [number, number] | null;
   onGetDirections: (lat: number, lng: number) => void;

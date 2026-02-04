@@ -1,18 +1,18 @@
 "use client";
 
 import MapCaller from "@/components/MapCaller";
-import MapOverlay from "@/components/MapOverlay";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Modal from "@/components/Modal";
+import WelcomeModal from "@/components/WelcomeModal";
 import { useState } from "react";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [mapStyle, setMapStyle] = useState("satellite");
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [destination, setDestination] = useState<[number, number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   const handleGetDirections = (lat: number, lng: number) => {
     if (navigator.geolocation) {
@@ -65,15 +65,12 @@ export default function Home() {
         onClearRoute={handleClearRoute}
       />
       
+      <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />
+
       <div className="relative flex-1 w-full overflow-hidden">
-        <MapOverlay 
-          mapStyle={mapStyle}
-          onMapStyleChange={setMapStyle}
-        />
         <MapCaller 
           searchQuery={searchQuery} 
           activeFilter={null}
-          mapStyle={mapStyle}
           userLocation={userLocation}
           destination={destination}
           onGetDirections={handleGetDirections}
