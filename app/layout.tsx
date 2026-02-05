@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google"; // Turbo: Switch font
 import "./globals.css";
 
-const poppins = Poppins({
-  variable: "--font-poppins",
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono", // Turbo: Update variable name
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${poppins.variable} antialiased`}
+        className={`${jetbrainsMono.variable} antialiased`} // Turbo: Apply new font variable
       >
         <style dangerouslySetInnerHTML={{ __html: `
           @media (max-width: 768px) {

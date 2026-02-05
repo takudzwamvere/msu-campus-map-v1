@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, useMap, LayersControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -8,6 +8,9 @@ import { CAMPUS_BUILDINGS } from "../constants/campus-data";
 import { MAP_LAYERS } from "../constants/map-layers";
 import { useState, useEffect } from "react";
 import MapRouting from "./MapRouting";
+import MapLayerControl from "./MapLayerControl";
+import { CATEGORY_STYLES, getTypeStyles } from "../constants/campus-styles";
+import { getMarkerIcon } from "../constants/map-marker-utils";
 
 const MapBoundsController = () => {
   const map = useMap();
@@ -38,11 +41,6 @@ const MapBoundsController = () => {
   return null;
 };
 
-import { CATEGORY_STYLES, getTypeStyles } from "../constants/campus-styles";
-import { getMarkerIcon } from "../constants/map-marker-utils";
-
-
-
 export default function Map({ 
   searchQuery, 
   activeFilter, 
@@ -57,8 +55,11 @@ export default function Map({
   onGetDirections: (lat: number, lng: number) => void;
 }) {
 
-  // Filter buildings
+  const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
+
+  // Filter buildings logic...
   const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
+      // ... (existing filter logic)
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       const matchName = building.Building.toLowerCase().includes(q);
@@ -88,26 +89,66 @@ export default function Map({
       minZoom={15}
       maxBoundsViscosity={1.0}
       scrollWheelZoom={true}
+      zoomControl={false} // Turbo: Disable default top-left
       className="h-full w-full outline-none"
     >
+      <ZoomControl position="bottomright" /> {/* Turbo: Add custom position */}
       <MapBoundsController />
       
-      <LayersControl position="topright">
-        {MAP_LAYERS.map((layer, index) => (
-          <LayersControl.BaseLayer 
-            key={layer.name} 
-            checked={layer.checked || index === 0} 
-            name={layer.name}
-          >
-            <TileLayer
-              attribution={layer.attribution}
-              url={layer.url}
-              maxZoom={layer.maxZoom}
-              subdomains={layer.subdomains as string | string[] | undefined}
-            />
-          </LayersControl.BaseLayer>
-        ))}
-      </LayersControl>
+      <TileLayer
+        key={activeLayer.name}
+        attribution={activeLayer.attribution}
+        url={activeLayer.url}
+        maxZoom={activeLayer.maxZoom}
+        subdomains={activeLayer.subdomains as string | string[] | undefined}
+      />
+
+      {/* Custom Layer Control - outside Leaflet UI flow but inside map container logic if needed, 
+          actually it's better placed inside as a child or overlay. 
+          Since it's absolutely positioned, we can render it here. */}
+      
+      {/* Just a div overlay if we want it to be part of map context but we need to stop propagation if clicked?
+          Actually, let's put it "outside" the MapContainer in the caller? 
+          No, the user wants it ON the map. If we put it here, we need to make sure clicks don't drag map.
+          Leaflet handles controls specially. 
+          Ideally, we use a portal or just absolute div with z-index. 
+          Line 95 onwards replaced LayersControl.
+       */}
+       
+      {/* We can use a simple customized control wrapper or just absolute div since MapContainer has 'relative'. */}
+      <div className="leaflet-top leaflet-right">
+          <div className="leaflet-control">
+             {/* We can't easily inject React components into Leaflet's control pane without a portal.
+                 However, absolute positioning on top of the MapContainer works fine if z-index is high enough.
+                 Let's place it as a direct child of MapContainer? No, MapContainer children must be Map components or react-leaflet components.
+                 Wait, standard HTML elements work inside MapContainer but they move with map if not careful? 
+                 Actually, standard <div> inside MapContainer renders inside the map pane.
+                 For fixed UI, it's better to verify if MapContainer supports direct HTML children overlay.
+                 
+                  BETTER APPROACH: "MapCaller" has a wrapper around Map.
+                 But "Map" is the one with the state.
+                 
+                 Solution: Render a div that is absolutely positioned.
+                 For React Leaflet v4, children are rendered.
+             */}
+          </div>
+      </div>
+      
+      {/* Using my custom control as a simple absolute overlay. 
+          To prevent map interactions: onMouseDown={(e) => e.stopPropagation()} 
+      */}
+      <div 
+        style={{ position: "absolute", top: 0, right: 0, zIndex: 1000 }}
+        onMouseDown={(e) => e.stopPropagation()}
+        onDoubleClick={(e) => e.stopPropagation()}
+        onWheel={(e) => e.stopPropagation()}
+      >
+         <MapLayerControl 
+            activeLayerName={activeLayer.name}
+            onLayerSelect={setActiveLayer}
+         />
+      </div>
+
       
       {/* Routing Logic */}
       <MapRouting userLocation={userLocation} destination={destination} />

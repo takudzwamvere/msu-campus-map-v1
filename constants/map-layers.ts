@@ -1,14 +1,14 @@
 export const MAP_LAYERS = [
   {
     name: "Google Streets",
-    url: "https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+    url: "https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}&apistyle=s.t:3%7Cp.v:off%2Cs.t:13169%7Cp.v:off%2Cs.t:4%7Cp.v:off",
     attribution: "&copy; Google",
     maxZoom: 20,
     subdomains: ["mt0", "mt1", "mt2", "mt3"]
   },
   {
     name: "Google Hybrid",
-    url: "https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}",
+    url: "https://{s}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&apistyle=s.t:3%7Cp.v:off%2Cs.t:13169%7Cp.v:off%2Cs.t:4%7Cp.v:off",
     attribution: "&copy; Google",
     maxZoom: 20,
     subdomains: ["mt0", "mt1", "mt2", "mt3"],

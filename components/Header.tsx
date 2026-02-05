@@ -47,7 +47,7 @@ export default function Header({
   }, [wrapperRef]);
 
   return (
-    <header className="bg-slate-950 z-50 relative px-4 flex items-center justify-between h-10">
+    <header className="bg-slate-950 z-[5000] relative px-4 flex items-center justify-between h-10">
       <div className="w-full max-w-4xl mx-auto relative flex gap-4 items-center h-full">
 
          {!isRouting ? (
@@ -73,7 +73,7 @@ export default function Header({
 
 
               {showSuggestions && suggestions.length > 0 && (
-                <div ref={wrapperRef} className="absolute top-full left-0 mt-0 w-full bg-white border border-gray-200 border-t-0 shadow-lg z-50">
+                <div ref={wrapperRef} className="absolute top-full left-0 mt-0 w-full bg-white border border-gray-200 border-t-0 shadow-lg z-[2000]">
                   {suggestions.map((item, idx) => (
                     <div 
                       key={idx} 

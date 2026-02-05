@@ -1,14 +1,16 @@
 "use client";
 
 import MapCaller from "@/components/MapCaller";
-import Header from "@/components/Header";
+import Sidebar from "@/components/Sidebar";
 import Footer from "@/components/Footer";
 import Modal from "@/components/Modal";
 import WelcomeModal from "@/components/WelcomeModal";
+import MapLegend from "@/components/MapLegend";
 import { useState } from "react";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [destination, setDestination] = useState<[number, number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,21 +58,24 @@ export default function Home() {
   };
 
   return (
-    <main className="flex flex-col h-[100dvh] w-screen overflow-hidden bg-gray-50">
-      <Header 
+    <main className="flex flex-col h-dvh w-full overflow-hidden bg-gray-50">
+      <Sidebar 
         searchQuery={searchQuery}
         onSearch={setSearchQuery}
         onGetDirections={handleGetDirections}
         isRouting={!!destination}
         onClearRoute={handleClearRoute}
+        activeFilter={activeFilter}
+        onFilterChange={setActiveFilter}
       />
       
       <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />
+      <MapLegend />
 
       <div className="relative flex-1 w-full overflow-hidden">
         <MapCaller 
           searchQuery={searchQuery} 
-          activeFilter={null}
+          activeFilter={activeFilter}
           userLocation={userLocation}
           destination={destination}
           onGetDirections={handleGetDirections}
