@@ -291,20 +291,20 @@ export default function Sidebar({
 
                 {/* Routing / Active State */}
                 {isRouting && (
-                    <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl space-y-4">
+                    <div className="mt-4 p-4 bg-gradient-to-b from-[#27272a] to-[#18181b] border border-blue-500/30 rounded-xl space-y-4 shadow-lg">
                         <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/20 border border-white/10">
                                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" /></svg>
                             </div>
                             <div>
-                                <h3 className="text-white font-bold text-sm">Navigating</h3>
-                                <p className="text-blue-300 text-xs">Follow the route on the map</p>
+                                <h3 className="text-white font-bold text-sm tracking-wide">Navigating to Campus</h3>
+                                <p className="text-blue-400 text-xs font-medium">Follow the route on the map</p>
                             </div>
                         </div>
                         
                         <button 
                             onClick={onClearRoute}
-                            className="w-full py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2"
+                            className="w-full py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-lg text-sm font-bold transition-all flex items-center justify-center gap-2 hover:shadow-md cursor-pointer active:scale-[0.98]"
                         >
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                             End Navigation

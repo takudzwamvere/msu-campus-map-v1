@@ -36,8 +36,8 @@ export default function Home() {
           if (isWithinBounds) {
             setUserLocation([userLat, userLng]);
           } else {
-             // Fallback if user is outside campus boundaries (Front Gate)
-            setUserLocation([-19.510271810936406, 29.841081806506132]);
+             // User is outside campus boundaries - Warn them but still route
+            setUserLocation([userLat, userLng]);
             setIsModalOpen(true);
           }
           setDestination([lat, lng]);
@@ -89,15 +89,16 @@ export default function Home() {
         onClose={() => setIsModalOpen(false)}
         title=""
       >
-        <div className="space-y-3">
-          <p>It seems as if you are currently outside the campus boundaries.
+        <div className="space-y-4">
+          <p className="text-gray-300 leading-relaxed">
+            You appear to be <span className="text-red-400 font-semibold">outside campus boundaries</span>.
           </p>
-          <p className="text-gray-600">
-            In order to avoid generating directions from outside the campus, directions have been generated starting from the <span className="font-semibold text-indigo-600">Main Front Gate</span> to your selected destination.
+          <p className="text-gray-400 text-sm">
+             We will generate a route from your current location, but please note that turn-by-turn navigation is optimized for <span className="text-cyan-400 font-semibold">campus grounds</span>.
           </p>
-          <div className="p-3 bg-blue-50 text-blue-800 text-sm border border-blue-100">
+          <div className="p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-yellow-200 text-xs">
             <p>
-              <strong>Note:</strong> Turn-by-turn navigation works best when you are on campus grounds.
+              <strong>Note:</strong> Accuracy may vary outside the university area.
             </p>
           </div>
         </div>
