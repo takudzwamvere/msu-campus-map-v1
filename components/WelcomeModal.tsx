@@ -16,7 +16,7 @@ export default function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
   if (!mounted || !isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center px-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
+    <div className="fixed inset-0 z-[6000] flex items-center justify-center px-4 bg-black/80 backdrop-blur-sm transition-opacity duration-300">
       <div className="bg-[#18181b] shadow-2xl w-full max-w-[460px] relative border border-white/10 animate-in fade-in zoom-in duration-300 p-8 text-center">
         
         <h2 className="text-3xl font-bold text-white mb-3 tracking-tight">Welcome to MSU Map</h2>

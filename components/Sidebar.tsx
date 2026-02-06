@@ -23,10 +23,17 @@ export default function Sidebar({
   activeFilter,
   onFilterChange,
 }: SidebarProps) {
-  const [isExpanded, setIsExpanded] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [suggestions, setSuggestions] = useState<typeof CAMPUS_BUILDINGS>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    // Default to expanded on desktop, collapsed on mobile
+    if (typeof window !== "undefined" && window.innerWidth >= 768) {
+      setIsExpanded(true);
+    }
+  }, []);
 
   // Search Logic
   useEffect(() => {
@@ -47,7 +54,7 @@ export default function Sidebar({
   return (
     <>
       {/* Mobile Bottom Sheet (Visible on small screens) */}
-      <div className={`md:hidden fixed bottom-0 left-0 w-full z-[4000] flex flex-col transition-transform duration-300 ease-spring ${
+      <div className={`md:hidden fixed bottom-0 left-0 w-full z-[3000] flex flex-col transition-transform duration-300 ease-spring ${
           isExpanded ? "translate-y-0 h-[80vh]" : "translate-y-[calc(100%-80px)] h-[80vh]"
       }`}>
          <div className="bg-[#18181b] rounded-t-none shadow-[0_-8px_30px_rgba(0,0,0,0.5)] flex-1 flex flex-col border-t border-white/10 relative">
