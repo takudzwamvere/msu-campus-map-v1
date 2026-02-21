@@ -40,12 +40,15 @@ export default function MapRouting({
       ],
       routeWhileDragging: false,
       showAlternatives: false,
-      fitSelectedRoutes: false, // Custom fitting logic below
+      fitSelectedRoutes: false,
+      show: false,
       lineOptions: {
         styles: [{ color: "#3b82f6", weight: 5, opacity: 0.7 }],
         extendToWaypoints: true,
         missingRouteTolerance: 0
       },
+      // @ts-ignore
+      createMarker: () => null,
       // @ts-ignore
       geocoder: null, 
       addWaypoints: false,

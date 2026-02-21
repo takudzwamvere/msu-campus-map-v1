@@ -1,16 +1,23 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono } from "next/font/google"; // Turbo: Switch font
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
-  variable: "--font-jetbrains-mono", // Turbo: Update variable name
+  variable: "--font-jetbrains-mono",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
-  title: "MSU Campus Map",
-  description: "Open source project for Midlands State University Campus Map. Uses NextJS and LeafletJS.",
+  title: "MSU Campus Map | Midlands State University Interactive Map",
+  description: "Navigate Midlands State University with ease. Find buildings, lecture halls, dormitories, and get turn-by-turn directions across the Gweru main campus.",
+  keywords: ["MSU", "Midlands State University", "campus map", "Gweru", "navigation", "university map"],
+  openGraph: {
+    title: "MSU Campus Map",
+    description: "Interactive campus map for Midlands State University — find buildings, get directions, and explore campus.",
+    type: "website",
+    locale: "en_US",
+  },
 };
 
 export default function RootLayout({
@@ -20,14 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${jetbrainsMono.variable} antialiased`} // Turbo: Apply new font variable
-      >
-        <style dangerouslySetInnerHTML={{ __html: `
-          @media (max-width: 768px) {
-            .leaflet-control-attribution { display: none !important; }
-          }
-        `}} />
+      <body className={`${jetbrainsMono.variable} antialiased`}>
         {children}
       </body>
     </html>

@@ -111,7 +111,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "China Dining Hall",
         "Latitude": -19.511156341324597,
         "Longitude": 29.835297038433612,
-        "Description": "Dining Hall For China Girl's Domitories",
+        "Description": "Dining Hall For China Girl's Dormitories",
         "Poly": "China",
         "Campus": "Gweru",
         "Type": "Dining Hall"
@@ -468,7 +468,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Storage"
     },
     {
-        "Building": "RSSB BLock 1",
+        "Building": "RSSB Block 1",
         "Latitude": -19.512481555001305,
         "Longitude": 29.83948018752571,
         "Description": "Classroom block",
@@ -477,7 +477,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Classrooms"
     },
     {
-        "Building": "RSSB BLock 2",
+        "Building": "RSSB Block 2",
         "Latitude": -19.512532118320433,
         "Longitude": 29.83923342431755,
         "Description": "Classroom block",
@@ -486,7 +486,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Classrooms"
     },
     {
-        "Building": "RSSB BLock 3",
+        "Building": "RSSB Block 3",
         "Latitude": -19.512855723188366,
         "Longitude": 29.839426543350015,
         "Description": "Classroom block",
@@ -495,7 +495,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Classrooms"
     },
     {
-        "Building": "RSSB BLock 4",
+        "Building": "RSSB Block 4",
         "Latitude": -19.512279301566682,
         "Longitude": 29.839329983833785,
         "Description": "Classroom block",
@@ -504,7 +504,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Classrooms"
     },
     {
-        "Building": "RSSB BLock 5",
+        "Building": "RSSB Block 5",
         "Latitude": -19.51233997762364,
         "Longitude": 29.83904030528508,
         "Description": "Classroom block",
@@ -513,7 +513,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Classrooms"
     },
     {
-        "Building": "RSSB BLock 6",
+        "Building": "RSSB Block 6",
         "Latitude": -19.512501780330847,
         "Longitude": 29.8389866611094,
         "Description": "Classroom block",
@@ -522,7 +522,7 @@ export const CAMPUS_BUILDINGS = [
         "Type": "Classrooms"
     },
     {
-        "Building": "RSSB BLock 7",
+        "Building": "RSSB Block 7",
         "Latitude": -19.512795047324964,
         "Longitude": 29.839051034120217,
         "Description": "Classroom block",
@@ -645,7 +645,7 @@ export const CAMPUS_BUILDINGS = [
         "Description": null,
         "Poly": null,
         "Campus": "Gweru",
-        "Type": "Laboratory"
+        "Type": "Library"
     },
     {
         "Building": "Chem Lab 1",
