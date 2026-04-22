@@ -27,6 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script defer src="https://analytics.msucampusmap.online/script.js" data-website-id="65b6ccc5-9567-4372-a2c0-d5414b8d2154"></script>
+      </head>
       <body className={`${jetbrainsMono.variable} antialiased`}>
         {children}
       </body>
