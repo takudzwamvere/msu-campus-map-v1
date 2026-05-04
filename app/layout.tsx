@@ -171,9 +171,9 @@ export default function RootLayout({
       <body className={`${jetbrainsMono.variable} antialiased`}>
         {children}
         <Script
-          src="https://analytics.msucampusmap.online/script.js"
-          data-website-id="65b6ccc5-9567-4372-a2c0-d5414b8d2154"
-          strategy="lazyOnload"
+          src="https://analytics.takudzwamvere.com/script.js"
+          data-website-id="3766f0d7-4b3e-499b-9caa-9af0745efe90"
+          strategy="afterInteractive"
         />
       </body>
     </html>
