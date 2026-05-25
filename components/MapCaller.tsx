@@ -11,6 +11,8 @@ interface MapProps {
   focusedLocation: [number, number] | null;
   selectedBuilding: string | null;
   onRouteSummary?: (summary: import("./MapRouting").RouteSummary) => void;
+  pendingDestination: [number, number] | null;
+  onMapLocationSet: (lat: number, lng: number) => void;
 }
 
 const Map = dynamic(() => import("./Map"), {

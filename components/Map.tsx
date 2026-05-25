@@ -50,6 +50,23 @@ const ZoomTracker = ({ onZoomChange }: { onZoomChange: (z: number) => void }) =>
   return null;
 };
 
+const MapClickHandler = ({
+  pendingDestination,
+  onLocationSet,
+}: {
+  pendingDestination: [number, number] | null;
+  onLocationSet: (lat: number, lng: number) => void;
+}) => {
+  useMapEvents({
+    click(e) {
+      if (pendingDestination) {
+        onLocationSet(e.latlng.lat, e.latlng.lng);
+      }
+    },
+  });
+  return null;
+};
+
 const MyLocationButton = ({ onLocate }: { onLocate: (pos: [number, number]) => void }) => {
   const map = useMap();
   const [locating, setLocating] = useState(false);
@@ -103,6 +120,8 @@ export default function Map({
   focusedLocation,
   selectedBuilding,
   onRouteSummary,
+  pendingDestination,
+  onMapLocationSet,
 }: {
   searchQuery: string;
   activeFilter: string | null;
@@ -112,6 +131,8 @@ export default function Map({
   focusedLocation: [number, number] | null;
   selectedBuilding: string | null;
   onRouteSummary?: (summary: RouteSummary) => void;
+  pendingDestination: [number, number] | null;
+  onMapLocationSet: (lat: number, lng: number) => void;
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
   const [mapZoom, setMapZoom] = useState(16);
@@ -149,6 +170,7 @@ export default function Map({
       <MapBoundsController />
       <FlyToController location={focusedLocation} />
       <ZoomTracker onZoomChange={setMapZoom} />
+      <MapClickHandler pendingDestination={pendingDestination} onLocationSet={onMapLocationSet} />
       <MyLocationButton onLocate={(pos) => {
         // Surface the located position to the parent via userLocation if needed
         // Currently just pans the map — full GPS flow remains via handleGetDirections

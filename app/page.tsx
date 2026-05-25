@@ -18,6 +18,7 @@ export default function Home() {
   const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [pendingDestination, setPendingDestination] = useState<[number, number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -58,11 +59,14 @@ export default function Home() {
       (error) => {
         console.error("Error getting location:", error);
         if (error.code === error.PERMISSION_DENIED) {
-          setToastMessage("Location access denied. Please enable it in your browser settings, or tap on the map to set your location manually.");
+          setToastMessage("Location access denied. Tap anywhere on the map to set your position manually.");
+          setPendingDestination([lat, lng]);
         } else if (error.code === error.POSITION_UNAVAILABLE) {
-          setToastMessage("Your location could not be determined. Try again or set your location manually.");
+          setToastMessage("Location unavailable. Tap on the map to set your position.");
+          setPendingDestination([lat, lng]);
         } else {
-          setToastMessage("Unable to retrieve your location. Please check your permissions.");
+          setToastMessage("Unable to retrieve your location. Tap the map to set it manually.");
+          setPendingDestination([lat, lng]);
         }
       }
     );
@@ -85,6 +89,14 @@ export default function Home() {
     setRouteSummary(null);
   };
 
+  const handleMapLocationSet = (lat: number, lng: number) => {
+    if (!pendingDestination) return;
+    setUserLocation([lat, lng]);
+    setDestination(pendingDestination);
+    setPendingDestination(null);
+    setRouteSummary(null);
+  };
+
   return (
     <main className="relative h-dvh w-full overflow-hidden">
       {/* Map takes 100% — everything else floats on top */}
@@ -97,6 +109,8 @@ export default function Home() {
         focusedLocation={focusedLocation}
         selectedBuilding={selectedBuilding}
         onRouteSummary={setRouteSummary}
+        pendingDestination={pendingDestination}
+        onMapLocationSet={handleMapLocationSet}
       />
 
       {/* Floating Search / Sidebar */}
@@ -129,6 +143,27 @@ export default function Home() {
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
         </button>
+      )}
+
+      {/* Pending location hint banner */}
+      {pendingDestination && (
+        <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[6000] pointer-events-none">
+          <div className="flex items-center gap-2 bg-amber-500/20 backdrop-blur-xl border border-amber-500/40 text-amber-200 px-4 py-2.5 rounded-2xl shadow-2xl text-sm font-semibold">
+            <svg className="w-4 h-4 text-amber-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+            </svg>
+            Tap the map to set your starting location
+            <button
+              onClick={() => setPendingDestination(null)}
+              className="pointer-events-auto ml-1 text-amber-400/60 hover:text-amber-300"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
       )}
 
       <Modal
