@@ -110,6 +110,20 @@ export default function Home() {
       <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />
       <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
 
+      {/* About / re-open welcome button — bottom-left, above mobile sidebar */}
+      {!showWelcome && (
+        <button
+          onClick={() => setShowWelcome(true)}
+          title="About this map"
+          className="fixed bottom-24 md:bottom-4 left-4 z-[2500] w-9 h-9 rounded-xl bg-[#1a1a2e]/90 backdrop-blur-xl border border-white/[0.08] shadow-lg text-gray-400 hover:text-white hover:bg-[#1a1a2e] transition-all flex items-center justify-center"
+        >
+          <svg className="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </button>
+      )}
+
       <Modal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
