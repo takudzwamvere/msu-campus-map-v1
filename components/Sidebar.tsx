@@ -36,7 +36,7 @@ export default function Sidebar({
       const filtered = CAMPUS_BUILDINGS.filter(b =>
         b.Building.toLowerCase().includes(q) ||
         (b.Description && b.Description.toLowerCase().includes(q))
-      ).slice(0, 6);
+      ).slice(0, 10);
       setSuggestions(filtered);
       setShowSuggestions(true);
     } else {
