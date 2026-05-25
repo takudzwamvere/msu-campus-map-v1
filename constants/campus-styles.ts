@@ -23,8 +23,19 @@ export const CATEGORY_STYLES = [
     name: "Services & Health",
     keywords: ["music", "disability", "residency", "clinic", "health"],
     styles: { color: "text-violet-600", bg: "bg-violet-100", border: "border-violet-200", fill: "bg-violet-500", icon: "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" }
+  },
+  {
+    name: "Admin & Facilities",
+    keywords: ["admin", "storage", "toilet", "hall", "chapel", "construction", "multi-purpose"],
+    styles: { color: "text-sky-600", bg: "bg-sky-100", border: "border-sky-200", fill: "bg-sky-500", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" }
+  },
+  {
+    name: "Parking",
+    keywords: ["car park", "parking"],
+    styles: { color: "text-slate-600", bg: "bg-slate-100", border: "border-slate-200", fill: "bg-slate-500", icon: "M8 7h.01M8 11h.01M8 15h.01M12 7h.01M12 11h.01M12 15h.01M16 7h.01M16 11h.01M16 15h.01M5 3h14a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2z" }
   }
 ];
+
 
 export const getTypeStyles = (type: string) => {
   const lowerType = type.toLowerCase();
