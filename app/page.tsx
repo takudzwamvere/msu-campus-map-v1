@@ -79,6 +79,12 @@ export default function Home() {
     if (buildingName) setSelectedBuilding(buildingName);
   };
 
+  const handlePlannedRoute = (fromLat: number, fromLng: number, toLat: number, toLng: number) => {
+    setUserLocation([fromLat, fromLng]);
+    setDestination([toLat, toLng]);
+    setRouteSummary(null);
+  };
+
   return (
     <main className="relative h-dvh w-full overflow-hidden">
       {/* Map takes 100% — everything else floats on top */}
@@ -99,6 +105,7 @@ export default function Home() {
         onSearch={setSearchQuery}
         onGetDirections={handleGetDirections}
         onFlyTo={handleFlyTo}
+        onPlanRoute={handlePlannedRoute}
         isRouting={!!destination}
         onClearRoute={handleClearRoute}
         activeFilter={activeFilter}

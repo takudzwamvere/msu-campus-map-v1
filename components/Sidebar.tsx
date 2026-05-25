@@ -10,6 +10,7 @@ interface SidebarProps {
   onSearch: (query: string) => void;
   onGetDirections: (lat: number, lng: number) => void;
   onFlyTo: (lat: number, lng: number, buildingName?: string) => void;
+  onPlanRoute: (fromLat: number, fromLng: number, toLat: number, toLng: number) => void;
   isRouting: boolean;
   onClearRoute: () => void;
   activeFilter: string | null;
@@ -22,6 +23,7 @@ export default function Sidebar({
   onSearch,
   onGetDirections,
   onFlyTo,
+  onPlanRoute,
   isRouting,
   onClearRoute,
   activeFilter,
@@ -31,6 +33,14 @@ export default function Sidebar({
   const [suggestions, setSuggestions] = useState<typeof CAMPUS_BUILDINGS>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState(false);
+  const [showPlanRoute, setShowPlanRoute] = useState(false);
+  const [fromBuilding, setFromBuilding] = useState<typeof CAMPUS_BUILDINGS[0] | null>(null);
+  const [toBuilding, setToBuilding] = useState<typeof CAMPUS_BUILDINGS[0] | null>(null);
+  const [planFromQuery, setPlanFromQuery] = useState("");
+  const [planToQuery, setPlanToQuery] = useState("");
+  const [planFromSuggestions, setPlanFromSuggestions] = useState<typeof CAMPUS_BUILDINGS>([]);
+  const [planToSuggestions, setPlanToSuggestions] = useState<typeof CAMPUS_BUILDINGS>([]);
+  const [activePlanField, setActivePlanField] = useState<"from" | "to" | null>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
 
@@ -49,6 +59,29 @@ export default function Sidebar({
       setShowSuggestions(false);
     }
   }, [searchQuery]);
+
+  // Plan Route query effects
+  useEffect(() => {
+    if (planFromQuery.length > 0) {
+      const q = planFromQuery.toLowerCase();
+      setPlanFromSuggestions(
+        CAMPUS_BUILDINGS.filter(b => b.Building.toLowerCase().includes(q)).slice(0, 6)
+      );
+    } else {
+      setPlanFromSuggestions([]);
+    }
+  }, [planFromQuery]);
+
+  useEffect(() => {
+    if (planToQuery.length > 0) {
+      const q = planToQuery.toLowerCase();
+      setPlanToSuggestions(
+        CAMPUS_BUILDINGS.filter(b => b.Building.toLowerCase().includes(q)).slice(0, 6)
+      );
+    } else {
+      setPlanToSuggestions([]);
+    }
+  }, [planToQuery]);
 
   // Click-outside & Escape handlers
   useEffect(() => {
@@ -98,6 +131,103 @@ export default function Sidebar({
     return mins < 60 ? `${mins} min` : `${Math.floor(mins / 60)}h ${mins % 60}m`;
   };
 
+  const startPlannedRoute = () => {
+    if (fromBuilding && toBuilding) {
+      onPlanRoute(fromBuilding.Latitude, fromBuilding.Longitude, toBuilding.Latitude, toBuilding.Longitude);
+      setShowPlanRoute(false);
+    }
+  };
+
+  // ──────────── Plan Route Panel (shared) ────────────
+  const renderPlanRoutePanel = () => (
+    <div className="mt-3 bg-[#1a1a2e]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-4 shadow-2xl shadow-black/40">
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-white text-sm font-semibold">Plan a Route</p>
+        <button onClick={() => setShowPlanRoute(false)} className="text-gray-500 hover:text-white">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+      </div>
+
+      {/* From */}
+      <div className="relative mb-2">
+        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">From</label>
+        {fromBuilding ? (
+          <div className="flex items-center justify-between bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-3 py-2">
+            <span className="text-sm text-emerald-300 font-medium truncate">{fromBuilding.Building}</span>
+            <button onClick={() => { setFromBuilding(null); setPlanFromQuery(""); }} className="text-emerald-500/60 hover:text-emerald-400 ml-2 shrink-0">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+        ) : (
+          <input
+            type="text"
+            placeholder="Choose start building..."
+            value={planFromQuery}
+            onChange={e => { setPlanFromQuery(e.target.value); setActivePlanField("from"); }}
+            onFocus={() => setActivePlanField("from")}
+            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2 text-sm text-white placeholder-gray-500 outline-none focus:border-emerald-500/40"
+          />
+        )}
+        {activePlanField === "from" && planFromSuggestions.length > 0 && !fromBuilding && (
+          <div className="absolute z-50 top-full mt-1 w-full bg-[#1a1a2e]/95 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden">
+            {planFromSuggestions.map(b => (
+              <button key={b.Building} onClick={() => { setFromBuilding(b); setPlanFromQuery(""); setActivePlanField(null); }}
+                className="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-white/[0.06] border-b border-white/[0.04] last:border-0 flex items-center gap-2">
+                <div className="w-5 h-5 rounded-md bg-emerald-500/20 flex items-center justify-center shrink-0">
+                  <svg className="w-3 h-3 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" strokeWidth={2} /></svg>
+                </div>
+                <span className="truncate">{b.Building}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* To */}
+      <div className="relative mb-4">
+        <label className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1 block">To</label>
+        {toBuilding ? (
+          <div className="flex items-center justify-between bg-blue-500/10 border border-blue-500/20 rounded-xl px-3 py-2">
+            <span className="text-sm text-blue-300 font-medium truncate">{toBuilding.Building}</span>
+            <button onClick={() => { setToBuilding(null); setPlanToQuery(""); }} className="text-blue-500/60 hover:text-blue-400 ml-2 shrink-0">
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+        ) : (
+          <input
+            type="text"
+            placeholder="Choose destination building..."
+            value={planToQuery}
+            onChange={e => { setPlanToQuery(e.target.value); setActivePlanField("to"); }}
+            onFocus={() => setActivePlanField("to")}
+            className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl px-3 py-2 text-sm text-white placeholder-gray-500 outline-none focus:border-blue-500/40"
+          />
+        )}
+        {activePlanField === "to" && planToSuggestions.length > 0 && !toBuilding && (
+          <div className="absolute z-50 top-full mt-1 w-full bg-[#1a1a2e]/95 backdrop-blur-xl border border-white/[0.08] rounded-xl shadow-2xl overflow-hidden">
+            {planToSuggestions.map(b => (
+              <button key={b.Building} onClick={() => { setToBuilding(b); setPlanToQuery(""); setActivePlanField(null); }}
+                className="w-full text-left px-3 py-2.5 text-sm text-gray-200 hover:bg-white/[0.06] border-b border-white/[0.04] last:border-0 flex items-center gap-2">
+                <div className="w-5 h-5 rounded-md bg-blue-500/20 flex items-center justify-center shrink-0">
+                  <svg className="w-3 h-3 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /></svg>
+                </div>
+                <span className="truncate">{b.Building}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <button
+        onClick={startPlannedRoute}
+        disabled={!fromBuilding || !toBuilding}
+        className="w-full py-2.5 rounded-xl bg-blue-500 hover:bg-blue-400 disabled:bg-white/[0.06] disabled:text-gray-600 text-white font-semibold text-sm transition-all"
+      >
+        {fromBuilding && toBuilding ? "Start Route" : "Select both buildings"}
+      </button>
+    </div>
+  );
+
   // ──────────── DESKTOP ────────────
   const renderDesktop = () => (
     <div className="hidden md:block fixed top-0 left-0 z-[3000] p-4 w-[400px] pointer-events-none">
@@ -119,10 +249,24 @@ export default function Sidebar({
               className="flex-1 bg-transparent text-white placeholder-gray-500 py-3.5 px-2 text-[15px] outline-none"
             />
             {searchQuery && (
-              <button onClick={clearSearch} className="pr-4 text-gray-500 hover:text-white transition-colors">
+              <button onClick={clearSearch} className="pr-2 text-gray-500 hover:text-white transition-colors">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             )}
+            <button
+              onClick={() => { setShowPlanRoute(!showPlanRoute); setShowSuggestions(false); }}
+              title="Plan a route between two buildings"
+              className={`mr-3 p-2 rounded-xl transition-all ${
+                showPlanRoute
+                  ? "bg-blue-500/20 text-blue-400"
+                  : "text-gray-500 hover:text-gray-300 hover:bg-white/[0.06]"
+              }`}
+            >
+              <svg className="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              </svg>
+            </button>
           </div>
 
           {/* Suggestions */}
@@ -147,8 +291,11 @@ export default function Sidebar({
           )}
         </div>
 
+        {/* Plan Route Panel */}
+        {showPlanRoute && !isRouting && renderPlanRoutePanel()}
+
         {/* Category Chips */}
-        {!isRouting && (
+        {!isRouting && !showPlanRoute && (
           <div className="flex gap-2 mt-3 overflow-x-auto no-scrollbar pb-1">
             {CATEGORY_STYLES.map((cat) => (
               <button
@@ -282,9 +429,21 @@ export default function Sidebar({
               )}
 
               {/* Categories (vertical for mobile) */}
-              {!isRouting && !showSuggestions && (
+              {!isRouting && !showSuggestions && !showPlanRoute && (
                 <div>
-                  <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider mb-3">Browse by Category</p>
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-[11px] font-bold text-gray-500 uppercase tracking-wider">Browse by Category</p>
+                    <button
+                      onClick={() => setShowPlanRoute(true)}
+                      className="flex items-center gap-1.5 text-[11px] font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                      </svg>
+                      Plan Route
+                    </button>
+                  </div>
                   <div className="grid grid-cols-2 gap-2">
                     {CATEGORY_STYLES.map((cat) => (
                       <button
@@ -313,6 +472,10 @@ export default function Sidebar({
                   </div>
                 </div>
               )}
+
+              {/* Plan Route panel (mobile) */}
+              {showPlanRoute && !isRouting && renderPlanRoutePanel()}
+
 
               {/* Routing */}
               {isRouting && (
