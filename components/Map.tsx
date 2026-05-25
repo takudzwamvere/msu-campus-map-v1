@@ -50,6 +50,7 @@ export default function Map({
   destination,
   onGetDirections,
   focusedLocation,
+  selectedBuilding,
 }: {
   searchQuery: string;
   activeFilter: string | null;
@@ -57,6 +58,7 @@ export default function Map({
   destination: [number, number] | null;
   onGetDirections: (lat: number, lng: number) => void;
   focusedLocation: [number, number] | null;
+  selectedBuilding: string | null;
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
 
@@ -124,13 +126,15 @@ export default function Map({
 
       <MapRouting userLocation={userLocation} destination={destination} />
 
-      {filteredBuildings.map((building, index) => {
+      {filteredBuildings.map((building) => {
         const style = getTypeStyles(building.Type || "Unknown");
+        const isSelected = building.Building === selectedBuilding;
         return (
           <Marker
             key={`${building.Building}-${building.Latitude}`}
             position={[building.Latitude, building.Longitude]}
-            icon={getMarkerIcon(building.Type || "Unknown", building.Building)}
+            icon={getMarkerIcon(building.Type || "Unknown", building.Building, isSelected)}
+            zIndexOffset={isSelected ? 1000 : 0}
           >
             <Popup className="custom-popup" closeButton={false}>
               <div className="min-w-[220px] max-w-[280px]">

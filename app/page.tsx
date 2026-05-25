@@ -13,6 +13,7 @@ export default function Home() {
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [destination, setDestination] = useState<[number, number] | null>(null);
   const [focusedLocation, setFocusedLocation] = useState<[number, number] | null>(null);
+  const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -62,8 +63,9 @@ export default function Home() {
     setUserLocation(null);
   };
 
-  const handleFlyTo = (lat: number, lng: number) => {
+  const handleFlyTo = (lat: number, lng: number, buildingName?: string) => {
     setFocusedLocation([lat, lng]);
+    if (buildingName) setSelectedBuilding(buildingName);
   };
 
   return (
@@ -76,6 +78,7 @@ export default function Home() {
         destination={destination}
         onGetDirections={handleGetDirections}
         focusedLocation={focusedLocation}
+        selectedBuilding={selectedBuilding}
       />
 
       {/* Floating Search / Sidebar */}

@@ -9,6 +9,7 @@ interface MapProps {
   destination: [number, number] | null;
   onGetDirections: (lat: number, lng: number) => void;
   focusedLocation: [number, number] | null;
+  selectedBuilding: string | null;
 }
 
 const Map = dynamic(() => import("./Map"), {
