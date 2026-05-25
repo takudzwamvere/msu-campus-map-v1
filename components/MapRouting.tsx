@@ -5,6 +5,7 @@ import { useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import { isWithinCampus, MAIN_GATE_COORDS } from "../constants/campus-bounds";
 
 // Fix for default marker icon issues in Leaflet when bundling
 // We don't need this if we are just drawing lines, but Routing Machine might add markers.
@@ -23,15 +24,9 @@ export default function MapRouting({
     if (!userLocation || !destination) return;
 
     // Gate Coordinates (approximate Main Front Gate)
-    const GATE_COORDS = L.latLng(-19.510271810936406, 29.841081806506132);
-    
-    // Check if user is roughly on campus (simple bbox check)
-    // Campus bounds from page.tsx:
-    // minLat = -19.525... maxLat = -19.507...
-    // minLng = 29.822... maxLng = 29.846...
-    const isUserOnCampus = 
-        userLocation[0] >= -19.525414674850833 && userLocation[0] <= -19.507078465507732 &&
-        userLocation[1] >= 29.82276282383294 && userLocation[1] <= 29.846761174571597;
+    const GATE_COORDS = L.latLng(MAIN_GATE_COORDS[0], MAIN_GATE_COORDS[1]);
+
+    const isUserOnCampus = isWithinCampus(userLocation[0], userLocation[1]);
 
     const routingControl = L.Routing.control({
       waypoints: [

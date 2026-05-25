@@ -5,6 +5,7 @@ import Sidebar from "@/components/Sidebar";
 import Modal from "@/components/Modal";
 import WelcomeModal from "@/components/WelcomeModal";
 import { useState, useEffect } from "react";
+import { isWithinCampus } from "@/constants/campus-bounds";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -44,17 +45,8 @@ export default function Home() {
         const userLat = position.coords.latitude;
         const userLng = position.coords.longitude;
 
-        const minLat = -19.525414674850833;
-        const maxLat = -19.507078465507732;
-        const minLng = 29.82276282383294;
-        const maxLng = 29.846761174571597;
-
-        const isWithinBounds =
-          userLat >= minLat && userLat <= maxLat &&
-          userLng >= minLng && userLng <= maxLng;
-
         setUserLocation([userLat, userLng]);
-        if (!isWithinBounds) setIsModalOpen(true);
+        if (!isWithinCampus(userLat, userLng)) setIsModalOpen(true);
         setDestination([lat, lng]);
       },
       (error) => {

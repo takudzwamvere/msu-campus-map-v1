@@ -6,6 +6,7 @@ import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility
 import "leaflet-defaulticon-compatibility";
 import { CAMPUS_BUILDINGS } from "../constants/campus-data";
 import { MAP_LAYERS } from "../constants/map-layers";
+import { CAMPUS_BOUNDS_ARRAY } from "../constants/campus-bounds";
 import { useState, useEffect } from "react";
 import MapRouting from "./MapRouting";
 import MapLayerControl from "./MapLayerControl";
@@ -19,12 +20,8 @@ const MapBoundsController = () => {
   useEffect(() => {
     if (!map) return;
     const timer = requestAnimationFrame(() => {
-      const bounds: [number, number][] = [
-        [-19.525414674850833, 29.82276282383294],
-        [-19.507078465507732, 29.846761174571597]
-      ];
       try {
-        map.setMaxBounds(bounds);
+        map.setMaxBounds(CAMPUS_BOUNDS_ARRAY);
         map.setMinZoom(15);
         map.options.minZoom = 15;
       } catch {
