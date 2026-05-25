@@ -42,12 +42,12 @@ export default function MapRouting({
         extendToWaypoints: true,
         missingRouteTolerance: 0
       },
-      // @ts-ignore
-      createMarker: () => null,
-      // @ts-ignore
-      geocoder: null, 
+      plan: new L.Routing.Plan(
+        [L.latLng(userLocation[0], userLocation[1]), L.latLng(destination[0], destination[1])],
+        { createMarker: () => null, addWaypoints: false }
+      ),
       addWaypoints: false,
-      collapsible: true, 
+      collapsible: true,
     }).addTo(map);
 
     // Custom Focus Logic
