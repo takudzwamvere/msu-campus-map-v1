@@ -47,7 +47,7 @@ export default function MapRouting({
       },
       plan: new L.Routing.Plan(
         [L.latLng(userLocation[0], userLocation[1]), L.latLng(destination[0], destination[1])],
-        { createMarker: () => null, addWaypoints: false }
+        { createMarker: () => false as unknown as L.Marker, addWaypoints: false }
       ),
       addWaypoints: false,
       collapsible: true,
