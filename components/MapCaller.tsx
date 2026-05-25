@@ -10,6 +10,7 @@ interface MapProps {
   onGetDirections: (lat: number, lng: number) => void;
   focusedLocation: [number, number] | null;
   selectedBuilding: string | null;
+  onRouteSummary?: (summary: import("./MapRouting").RouteSummary) => void;
 }
 
 const Map = dynamic(() => import("./Map"), {

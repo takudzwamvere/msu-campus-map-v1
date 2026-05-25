@@ -8,7 +8,7 @@ import { CAMPUS_BUILDINGS } from "../constants/campus-data";
 import { MAP_LAYERS } from "../constants/map-layers";
 import { CAMPUS_BOUNDS_ARRAY } from "../constants/campus-bounds";
 import { useState, useEffect } from "react";
-import MapRouting from "./MapRouting";
+import MapRouting, { type RouteSummary } from "./MapRouting";
 import MapLayerControl from "./MapLayerControl";
 import MapLegend from "./MapLegend";
 import { CATEGORY_STYLES, getTypeStyles } from "../constants/campus-styles";
@@ -95,6 +95,7 @@ export default function Map({
   onGetDirections,
   focusedLocation,
   selectedBuilding,
+  onRouteSummary,
 }: {
   searchQuery: string;
   activeFilter: string | null;
@@ -103,6 +104,7 @@ export default function Map({
   onGetDirections: (lat: number, lng: number) => void;
   focusedLocation: [number, number] | null;
   selectedBuilding: string | null;
+  onRouteSummary?: (summary: RouteSummary) => void;
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
 
@@ -172,7 +174,7 @@ export default function Map({
         <MapLegend />
       </div>
 
-      <MapRouting userLocation={userLocation} destination={destination} />
+      <MapRouting userLocation={userLocation} destination={destination} onRouteSummary={onRouteSummary} />
 
       {filteredBuildings.map((building) => {
         const style = getTypeStyles(building.Type || "Unknown");

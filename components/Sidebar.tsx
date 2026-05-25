@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { CAMPUS_BUILDINGS } from "../constants/campus-data";
 import { CATEGORY_STYLES } from "../constants/campus-styles";
+import type { RouteSummary } from "./MapRouting";
 
 interface SidebarProps {
   searchQuery: string;
@@ -13,6 +14,7 @@ interface SidebarProps {
   onClearRoute: () => void;
   activeFilter: string | null;
   onFilterChange: (filter: string | null) => void;
+  routeSummary: RouteSummary | null;
 }
 
 export default function Sidebar({
@@ -24,6 +26,7 @@ export default function Sidebar({
   onClearRoute,
   activeFilter,
   onFilterChange,
+  routeSummary,
 }: SidebarProps) {
   const [suggestions, setSuggestions] = useState<typeof CAMPUS_BUILDINGS>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -85,6 +88,14 @@ export default function Sidebar({
     onFlyTo(item.Latitude, item.Longitude, item.Building);   // Pan and highlight the building
     setShowSuggestions(false);
     setMobileExpanded(false);
+  };
+
+  const formatDistance = (metres: number) =>
+    metres < 1000 ? `${Math.round(metres)} m` : `${(metres / 1000).toFixed(1)} km`;
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.round(seconds / 60);
+    return mins < 60 ? `${mins} min` : `${Math.floor(mins / 60)}h ${mins % 60}m`;
   };
 
   // ──────────── DESKTOP ────────────
@@ -167,7 +178,15 @@ export default function Sidebar({
                 </div>
                 <div>
                   <p className="text-white text-sm font-semibold">Route Active</p>
-                  <p className="text-gray-500 text-xs">Follow the blue line on the map</p>
+                  {routeSummary ? (
+                    <p className="text-gray-400 text-xs">
+                      <span className="text-cyan-400 font-bold">{formatDistance(routeSummary.distanceMetres)}</span>
+                      {" · "}
+                      <span className="text-green-400 font-bold">{formatTime(routeSummary.timeSeconds)}</span>
+                    </p>
+                  ) : (
+                    <p className="text-gray-500 text-xs">Calculating route…</p>
+                  )}
                 </div>
               </div>
               <button
@@ -305,7 +324,15 @@ export default function Sidebar({
                       </div>
                       <div>
                         <p className="text-white text-sm font-semibold">Route Active</p>
-                        <p className="text-gray-500 text-xs">Follow the blue line</p>
+                        {routeSummary ? (
+                          <p className="text-gray-400 text-xs">
+                            <span className="text-cyan-400 font-bold">{formatDistance(routeSummary.distanceMetres)}</span>
+                            {" · "}
+                            <span className="text-green-400 font-bold">{formatTime(routeSummary.timeSeconds)}</span>
+                          </p>
+                        ) : (
+                          <p className="text-gray-500 text-xs">Calculating…</p>
+                        )}
                       </div>
                     </div>
                     <button onClick={onClearRoute} className="px-4 py-2 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold">

@@ -6,6 +6,7 @@ import Modal from "@/components/Modal";
 import WelcomeModal from "@/components/WelcomeModal";
 import { useState, useEffect } from "react";
 import { isWithinCampus } from "@/constants/campus-bounds";
+import type { RouteSummary } from "@/components/MapRouting";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -14,6 +15,7 @@ export default function Home() {
   const [destination, setDestination] = useState<[number, number] | null>(null);
   const [focusedLocation, setFocusedLocation] = useState<[number, number] | null>(null);
   const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
+  const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -61,6 +63,7 @@ export default function Home() {
   const handleClearRoute = () => {
     setDestination(null);
     setUserLocation(null);
+    setRouteSummary(null);
   };
 
   const handleFlyTo = (lat: number, lng: number, buildingName?: string) => {
@@ -79,6 +82,7 @@ export default function Home() {
         onGetDirections={handleGetDirections}
         focusedLocation={focusedLocation}
         selectedBuilding={selectedBuilding}
+        onRouteSummary={setRouteSummary}
       />
 
       {/* Floating Search / Sidebar */}
@@ -91,6 +95,7 @@ export default function Home() {
         onClearRoute={handleClearRoute}
         activeFilter={activeFilter}
         onFilterChange={setActiveFilter}
+        routeSummary={routeSummary}
       />
 
       {/* Modals */}

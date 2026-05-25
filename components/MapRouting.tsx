@@ -7,16 +7,19 @@ import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import { isWithinCampus, MAIN_GATE_COORDS } from "../constants/campus-bounds";
 
-// Fix for default marker icon issues in Leaflet when bundling
-// We don't need this if we are just drawing lines, but Routing Machine might add markers.
-// Assuming global L is patched by leaflet-defaulticon-compatibility, but sometimes explicit handling is safer.
+export interface RouteSummary {
+  distanceMetres: number;
+  timeSeconds: number;
+}
 
 export default function MapRouting({ 
   userLocation, 
-  destination 
+  destination,
+  onRouteSummary,
 }: { 
   userLocation: [number, number] | null;
   destination: [number, number] | null;
+  onRouteSummary?: (summary: RouteSummary) => void;
 }) {
   const map = useMap();
 
@@ -50,20 +53,25 @@ export default function MapRouting({
       collapsible: true,
     }).addTo(map);
 
-    // Custom Focus Logic
+    // Custom Focus Logic + surface route summary
     routingControl.on('routesfound', function(e) {
-        if (isUserOnCampus) {
-            // Standard behavior: fit the whole route (User -> Destination)
-            const routes = e.routes;
-            const bounds = L.latLngBounds([userLocation, destination]); // Default tight bounds
-            // Or better, use the route instructions bounds but we can just use the points for simplicity & speed
-            map.fitBounds(bounds, { padding: [50, 50] });     
-        } else {
-            // Off-campus behavior: Focus on Campus (Gate -> Destination)
-            // This shows the destination context while keeping the line to the user visible if they zoom out
-            const bounds = L.latLngBounds([GATE_COORDS, L.latLng(destination[0], destination[1])]);
-            map.fitBounds(bounds, { padding: [50, 50] });
-        }
+      const route = e.routes[0];
+
+      // Fire route summary callback
+      if (onRouteSummary && route?.summary) {
+        onRouteSummary({
+          distanceMetres: route.summary.totalDistance,
+          timeSeconds: route.summary.totalTime,
+        });
+      }
+
+      if (isUserOnCampus) {
+        const bounds = L.latLngBounds([userLocation, destination]);
+        map.fitBounds(bounds, { padding: [50, 50] });
+      } else {
+        const bounds = L.latLngBounds([GATE_COORDS, L.latLng(destination[0], destination[1])]);
+        map.fitBounds(bounds, { padding: [50, 50] });
+      }
     });
 
     return () => {
@@ -73,3 +81,4 @@ export default function MapRouting({
 
   return null;
 }
+
