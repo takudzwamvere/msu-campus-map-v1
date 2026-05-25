@@ -8,6 +8,7 @@ interface MapProps {
   userLocation: [number, number] | null;
   destination: [number, number] | null;
   onGetDirections: (lat: number, lng: number) => void;
+  focusedLocation: [number, number] | null;
 }
 
 const Map = dynamic(() => import("./Map"), {

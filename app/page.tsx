@@ -12,6 +12,7 @@ export default function Home() {
   const [activeFilter, setActiveFilter] = useState<string | null>(null);
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [destination, setDestination] = useState<[number, number] | null>(null);
+  const [focusedLocation, setFocusedLocation] = useState<[number, number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -61,6 +62,10 @@ export default function Home() {
     setUserLocation(null);
   };
 
+  const handleFlyTo = (lat: number, lng: number) => {
+    setFocusedLocation([lat, lng]);
+  };
+
   return (
     <main className="relative h-dvh w-full overflow-hidden">
       {/* Map takes 100% — everything else floats on top */}
@@ -70,6 +75,7 @@ export default function Home() {
         userLocation={userLocation}
         destination={destination}
         onGetDirections={handleGetDirections}
+        focusedLocation={focusedLocation}
       />
 
       {/* Floating Search / Sidebar */}
@@ -77,6 +83,7 @@ export default function Home() {
         searchQuery={searchQuery}
         onSearch={setSearchQuery}
         onGetDirections={handleGetDirections}
+        onFlyTo={handleFlyTo}
         isRouting={!!destination}
         onClearRoute={handleClearRoute}
         activeFilter={activeFilter}

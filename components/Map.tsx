@@ -34,18 +34,29 @@ const MapBoundsController = () => {
   return null;
 };
 
+const FlyToController = ({ location }: { location: [number, number] | null }) => {
+  const map = useMap();
+  useEffect(() => {
+    if (!location) return;
+    map.flyTo(location, Math.max(map.getZoom(), 18), { animate: true, duration: 1.2 });
+  }, [map, location]);
+  return null;
+};
+
 export default function Map({
   searchQuery,
   activeFilter,
   userLocation,
   destination,
-  onGetDirections
+  onGetDirections,
+  focusedLocation,
 }: {
   searchQuery: string;
   activeFilter: string | null;
   userLocation: [number, number] | null;
   destination: [number, number] | null;
   onGetDirections: (lat: number, lng: number) => void;
+  focusedLocation: [number, number] | null;
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
 
@@ -79,6 +90,7 @@ export default function Map({
     >
       <ZoomControl position="bottomright" />
       <MapBoundsController />
+      <FlyToController location={focusedLocation} />
 
       <TileLayer
         key={activeLayer.name}

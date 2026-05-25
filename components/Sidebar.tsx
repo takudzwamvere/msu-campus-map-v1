@@ -8,6 +8,7 @@ interface SidebarProps {
   searchQuery: string;
   onSearch: (query: string) => void;
   onGetDirections: (lat: number, lng: number) => void;
+  onFlyTo: (lat: number, lng: number) => void;
   isRouting: boolean;
   onClearRoute: () => void;
   activeFilter: string | null;
@@ -18,6 +19,7 @@ export default function Sidebar({
   searchQuery,
   onSearch,
   onGetDirections,
+  onFlyTo,
   isRouting,
   onClearRoute,
   activeFilter,
@@ -80,7 +82,7 @@ export default function Sidebar({
 
   const selectSuggestion = (item: typeof CAMPUS_BUILDINGS[0]) => {
     onSearch(item.Building);
-    onGetDirections(item.Latitude, item.Longitude);
+    onFlyTo(item.Latitude, item.Longitude);   // Just pan to the building
     setShowSuggestions(false);
     setMobileExpanded(false);
   };
