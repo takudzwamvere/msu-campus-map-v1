@@ -552,7 +552,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Maths Lab",
         "Latitude": -19.51655690786262,
         "Longitude": 29.83871844036657,
-        "Description": null,
+        "Description": "Mathematics laboratory for practical sessions, tutorials, and computing exercises.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -561,7 +561,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Geo Labs",
         "Latitude": -19.51610184875016,
         "Longitude": 29.83905103425582,
-        "Description": null,
+        "Description": "Geography and geospatial sciences laboratories for mapping, GIS, and fieldwork analysis.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -570,7 +570,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Computer Labs",
         "Latitude": -19.516283872548872,
         "Longitude": 29.838847186388218,
-        "Description": null,
+        "Description": "General-purpose computing labs with networked workstations for coursework and research.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -579,7 +579,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Telecommunications Labs",
         "Latitude": -19.51587937494008,
         "Longitude": 29.839179780277465,
-        "Description": null,
+        "Description": "Labs for telecommunications engineering practicals, signal processing, and networking.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -588,7 +588,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "East Lecture Theatre",
         "Latitude": -19.516192860675133,
         "Longitude": 29.839265610958563,
-        "Description": null,
+        "Description": "Large east-facing lecture theatre used for engineering and science faculty lectures.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Theatre"
@@ -597,7 +597,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "West Lecture Theatre",
         "Latitude": -19.516293984976123,
         "Longitude": 29.839458729991033,
-        "Description": null,
+        "Description": "Large west-facing lecture theatre for multi-faculty lectures and academic events.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Theatre"
@@ -606,7 +606,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Surveying Labs",
         "Latitude": -19.516819830321467,
         "Longitude": 29.83934071280452,
-        "Description": null,
+        "Description": "Surveying and geomatics laboratory housing total stations, theodolites, and GPS equipment.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -615,7 +615,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "HABB Labs",
         "Latitude": -19.51559622601169,
         "Longitude": 29.83915832260719,
-        "Description": null,
+        "Description": "Human and Animal Biology & Biochemistry laboratories for life sciences practical work.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -624,7 +624,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "BioTech Lab 1",
         "Latitude": -19.515727688075838,
         "Longitude": 29.838890101728765,
-        "Description": null,
+        "Description": "Biotechnology laboratory 1 — cell culture, molecular biology, and microbiology practicals.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -633,7 +633,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "BioTech Lab 2",
         "Latitude": -19.515909712295844,
         "Longitude": 29.838793542212535,
-        "Description": null,
+        "Description": "Biotechnology laboratory 2 — genetics, fermentation, and advanced bioprocessing research.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -642,7 +642,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Medicine Library",
         "Latitude": -19.515029926667122,
         "Longitude": 29.838847186388218,
-        "Description": null,
+        "Description": "Specialised medical and health sciences library with clinical references, journals, and study spaces.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Library"
@@ -651,7 +651,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Chem Lab 1",
         "Latitude": -19.515656900823814,
         "Longitude": 29.838589694344925,
-        "Description": null,
+        "Description": "Chemistry laboratory 1 — general and inorganic chemistry practicals.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -660,7 +660,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Chem Lab 2",
         "Latitude": -19.515626563420607,
         "Longitude": 29.83834293113677,
-        "Description": null,
+        "Description": "Chemistry laboratory 2 — organic chemistry and synthesis practicals.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -669,7 +669,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Chem Lab 3",
         "Latitude": -19.516010836773955,
         "Longitude": 29.838418032982734,
-        "Description": null,
+        "Description": "Chemistry laboratory 3 — physical chemistry and analytical techniques.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -678,7 +678,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Chem Lab 4",
         "Latitude": -19.51596027454282,
         "Longitude": 29.838192727444852,
-        "Description": null,
+        "Description": "Chemistry laboratory 4 — biochemistry and environmental chemistry practicals.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Laboratory"
@@ -687,7 +687,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Main Library",
         "Latitude": -19.516607469907157,
         "Longitude": 29.840005900583023,
-        "Description": null,
+        "Description": "Central university library with print and digital collections, reading rooms, and printing facilities.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Library"
@@ -696,7 +696,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Main Dining Hall",
         "Latitude": -19.517638932163358,
         "Longitude": 29.839233424453152,
-        "Description": null,
+        "Description": "Primary campus dining facility serving breakfast, lunch, and dinner to all students.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Dining Hall"
@@ -705,7 +705,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Clinic",
         "Latitude": -19.517274887412736,
         "Longitude": 29.839104678431507,
-        "Description": null,
+        "Description": "Campus health clinic providing primary care, first aid, and medical consultations to students and staff.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Clinic"
@@ -714,7 +714,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Swimming Pool",
         "Latitude": -19.518266723085095,
         "Longitude": 29.83918211660029,
-        "Description": null,
+        "Description": "Outdoor swimming pool available to students and staff for recreation and competitive swimming.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Pool"
@@ -723,7 +723,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "BasketBall Court",
         "Latitude": -19.518124530999998,
         "Longitude": 29.838486307471328,
-        "Description": null,
+        "Description": "Outdoor basketball court used for recreational play and inter-faculty tournaments.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "BasketBall"
@@ -732,7 +732,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "VolleyBall Court",
         "Latitude": -19.51784014641427,
         "Longitude": 29.838590986722092,
-        "Description": null,
+        "Description": "Outdoor volleyball court for recreational and competitive campus matches.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "VolleyBall"
@@ -741,7 +741,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Tennis Court",
         "Latitude": -19.518420522588436,
         "Longitude": 29.83961930642078,
-        "Description": null,
+        "Description": "Hard-surface tennis court available for students and staff during recreational hours.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Tennis"
@@ -750,7 +750,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Football Pitch",
         "Latitude": -19.519145989875582,
         "Longitude": 29.83897891571022,
-        "Description": null,
+        "Description": "Full-size football pitch used for inter-faculty league matches and training.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Football"
@@ -759,7 +759,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Gym",
         "Latitude": -19.518687494928766,
         "Longitude": 29.83924369263863,
-        "Description": null,
+        "Description": "Fully-equipped gymnasium with weights, cardio machines, and fitness classes for students and staff.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Gym"
@@ -768,7 +768,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Employee Residence",
         "Latitude": -19.518797765995817,
         "Longitude": 29.84061683817284,
-        "Description": null,
+        "Description": "On-campus residential accommodation for university staff and faculty members.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Residency"
@@ -777,7 +777,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Disability Resource Centre",
         "Latitude": -19.51732074919259,
         "Longitude": 29.83740872698581,
-        "Description": null,
+        "Description": "Support centre offering accessibility services, assistive technology, and counselling for students with disabilities.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Disability"
@@ -786,7 +786,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Music",
         "Latitude": -19.518014259489313,
         "Longitude": 29.837051586012606,
-        "Description": null,
+        "Description": "Music department building with practice rooms, performance space, and instrument storage.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Music"
@@ -796,7 +796,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Students Resources Centre",
         "Latitude": -19.514619020733708,
         "Longitude": 29.840155017965284,
-        "Description": null,
+        "Description": "Student hub providing academic support, printing, student union offices, and recreational activities.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Leisure"
@@ -805,7 +805,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Orchid",
         "Latitude": -19.516406608303292,
         "Longitude": 29.838067590456625,
-        "Description": null,
+        "Description": "Ornamental orchid garden and green space for relaxation between campus facilities.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Garden"
@@ -814,7 +814,7 @@ export const CAMPUS_BUILDINGS = [
         "Building": "Cattle Pens",
         "Latitude": -19.515752184021693,
         "Longitude": 29.837410186407535,
-        "Description": null,
+        "Description": "Agricultural cattle pens used by the faculty of natural resources and animal husbandry students.",
         "Poly": null,
         "Campus": "Gweru",
         "Type": "Cattle"
