@@ -1,7 +1,7 @@
 import { divIcon } from "leaflet";
 import { getTypeStyles } from "./campus-styles";
 
-export const getMarkerIcon = (type: string, name: string, isSelected = false) => {
+export const getMarkerIcon = (type: string, name: string, isSelected = false, showLabel = true) => {
   const style = getTypeStyles(type);
 
   // Google-style Marker: Pin with Icon + Label below
@@ -24,12 +24,13 @@ export const getMarkerIcon = (type: string, name: string, isSelected = false) =>
         </div>
       </div>
       
+      ${showLabel ? `
       <div class="absolute top-1 left-1/2 -translate-x-1/2 whitespace-nowrap z-10 pointer-events-none">
          <span class="text-[10px] font-bold text-white tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]" 
                style="text-shadow: 0px 1px 3px rgba(0,0,0,0.9), 0px 0px 2px rgba(0,0,0,1);">
            ${name}
          </span>
-      </div>
+      </div>` : ''}
     </div>
   `;
 

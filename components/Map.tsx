@@ -43,6 +43,13 @@ const FlyToController = ({ location }: { location: [number, number] | null }) =>
   return null;
 };
 
+const ZoomTracker = ({ onZoomChange }: { onZoomChange: (z: number) => void }) => {
+  const map = useMapEvents({
+    zoom() { onZoomChange(map.getZoom()); },
+  });
+  return null;
+};
+
 const MyLocationButton = ({ onLocate }: { onLocate: (pos: [number, number]) => void }) => {
   const map = useMap();
   const [locating, setLocating] = useState(false);
@@ -107,6 +114,8 @@ export default function Map({
   onRouteSummary?: (summary: RouteSummary) => void;
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
+  const [mapZoom, setMapZoom] = useState(16);
+  const showLabels = mapZoom >= 18;
 
   const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
     if (searchQuery) {
@@ -139,6 +148,7 @@ export default function Map({
       <ZoomControl position="bottomright" />
       <MapBoundsController />
       <FlyToController location={focusedLocation} />
+      <ZoomTracker onZoomChange={setMapZoom} />
       <MyLocationButton onLocate={(pos) => {
         // Surface the located position to the parent via userLocation if needed
         // Currently just pans the map — full GPS flow remains via handleGetDirections
@@ -183,7 +193,7 @@ export default function Map({
           <Marker
             key={`${building.Building}-${building.Latitude}`}
             position={[building.Latitude, building.Longitude]}
-            icon={getMarkerIcon(building.Type || "Unknown", building.Building, isSelected)}
+            icon={getMarkerIcon(building.Type || "Unknown", building.Building, isSelected, showLabels)}
             zIndexOffset={isSelected ? 1000 : 0}
           >
             <Popup className="custom-popup" closeButton={false}>
