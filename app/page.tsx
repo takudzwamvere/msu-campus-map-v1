@@ -4,7 +4,8 @@ import MapCaller from "@/components/MapCaller";
 import Sidebar from "@/components/Sidebar";
 import Modal from "@/components/Modal";
 import WelcomeModal from "@/components/WelcomeModal";
-import { useState, useEffect } from "react";
+import Toast from "@/components/Toast";
+import { useState, useEffect, useCallback } from "react";
 import { isWithinCampus } from "@/constants/campus-bounds";
 import type { RouteSummary } from "@/components/MapRouting";
 
@@ -16,6 +17,7 @@ export default function Home() {
   const [focusedLocation, setFocusedLocation] = useState<[number, number] | null>(null);
   const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
 
@@ -41,7 +43,7 @@ export default function Home() {
 
   const handleGetDirections = (lat: number, lng: number) => {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported by this browser.");
+      setToastMessage("Geolocation is not supported by this browser.");
       return;
     }
     navigator.geolocation.getCurrentPosition(
@@ -55,7 +57,13 @@ export default function Home() {
       },
       (error) => {
         console.error("Error getting location:", error);
-        alert("Unable to retrieve your location. Please check your permissions.");
+        if (error.code === error.PERMISSION_DENIED) {
+          setToastMessage("Location access denied. Please enable it in your browser settings, or tap on the map to set your location manually.");
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          setToastMessage("Your location could not be determined. Try again or set your location manually.");
+        } else {
+          setToastMessage("Unable to retrieve your location. Please check your permissions.");
+        }
       }
     );
   };
@@ -100,6 +108,7 @@ export default function Home() {
 
       {/* Modals */}
       <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />
+      <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
 
       <Modal
         isOpen={isModalOpen}
