@@ -194,7 +194,7 @@ export default function Sidebar({
       )}
 
       <div className={`pointer-events-auto relative z-[3000] transition-all duration-300 ease-out ${
-        mobileExpanded ? "h-[55vh]" : "h-auto"
+        mobileExpanded ? "max-h-[55vh]" : "h-auto"
       }`}>
         <div className={`bg-[#1a1a2e]/95 backdrop-blur-xl border-t border-white/[0.08] shadow-[0_-10px_40px_rgba(0,0,0,0.5)] h-full flex flex-col ${
           mobileExpanded ? "rounded-t-3xl" : "rounded-t-2xl"
