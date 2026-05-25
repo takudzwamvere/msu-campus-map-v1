@@ -116,7 +116,7 @@ export default function Map({
         const style = getTypeStyles(building.Type || "Unknown");
         return (
           <Marker
-            key={`${building.Building}-${index}`}
+            key={`${building.Building}-${building.Latitude}`}
             position={[building.Latitude, building.Longitude]}
             icon={getMarkerIcon(building.Type || "Unknown", building.Building)}
           >

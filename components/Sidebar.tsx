@@ -115,9 +115,9 @@ export default function Sidebar({
           {/* Suggestions */}
           {showSuggestions && suggestions.length > 0 && (
             <div className="absolute top-full left-0 mt-2 w-full bg-[#1a1a2e]/95 backdrop-blur-xl border border-white/[0.08] rounded-2xl shadow-2xl shadow-black/50 overflow-hidden z-50">
-              {suggestions.map((item, idx) => (
+              {suggestions.map((item) => (
                 <button
-                  key={idx}
+                  key={`${item.Building}-${item.Latitude}`}
                   onClick={() => selectSuggestion(item)}
                   className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/[0.06] transition-colors text-left border-b border-white/[0.04] last:border-b-0"
                 >
@@ -242,9 +242,9 @@ export default function Sidebar({
               {/* Suggestions */}
               {showSuggestions && suggestions.length > 0 && (
                 <div className="mb-4">
-                  {suggestions.map((item, idx) => (
+                  {suggestions.map((item) => (
                     <button
-                      key={idx}
+                      key={`${item.Building}-${item.Latitude}`}
                       onClick={() => selectSuggestion(item)}
                       className="w-full flex items-center gap-3 px-3 py-3 hover:bg-white/[0.06] transition-colors text-left border-b border-white/[0.04] last:border-b-0 rounded-lg"
                     >
