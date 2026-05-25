@@ -1,6 +1,6 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, useMap, ZoomControl } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, ZoomControl } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
@@ -41,6 +41,50 @@ const FlyToController = ({ location }: { location: [number, number] | null }) =>
     map.flyTo(location, Math.max(map.getZoom(), 18), { animate: true, duration: 1.2 });
   }, [map, location]);
   return null;
+};
+
+const MyLocationButton = ({ onLocate }: { onLocate: (pos: [number, number]) => void }) => {
+  const map = useMap();
+  const [locating, setLocating] = useState(false);
+
+  const handleClick = () => {
+    setLocating(true);
+    map.locate({ setView: false, maxZoom: 18 });
+  };
+
+  useMapEvents({
+    locationfound(e) {
+      setLocating(false);
+      map.flyTo(e.latlng, Math.max(map.getZoom(), 17), { animate: true, duration: 1.2 });
+      onLocate([e.latlng.lat, e.latlng.lng]);
+    },
+    locationerror() {
+      setLocating(false);
+    },
+  });
+
+  return (
+    <div
+      style={{ position: "absolute", bottom: 100, right: 16, zIndex: 1000 }}
+      onMouseDown={(e) => e.stopPropagation()}
+      onDoubleClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={handleClick}
+        title="Go to my location"
+        className={`w-10 h-10 rounded-xl shadow-lg border border-white/[0.08] flex items-center justify-center transition-all ${
+          locating
+            ? "bg-blue-500/30 text-blue-300 animate-pulse"
+            : "bg-[#1a1a2e]/90 backdrop-blur-xl text-white hover:bg-[#1a1a2e]"
+        }`}
+      >
+        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+            d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0013 3.06V1h-2v2.06A8.994 8.994 0 003.06 11H1v2h2.06A8.994 8.994 0 0011 20.94V23h2v-2.06A8.994 8.994 0 0020.94 13H23v-2h-2.06z" />
+        </svg>
+      </button>
+    </div>
+  );
 };
 
 export default function Map({
@@ -93,6 +137,10 @@ export default function Map({
       <ZoomControl position="bottomright" />
       <MapBoundsController />
       <FlyToController location={focusedLocation} />
+      <MyLocationButton onLocate={(pos) => {
+        // Surface the located position to the parent via userLocation if needed
+        // Currently just pans the map — full GPS flow remains via handleGetDirections
+      }} />
 
       <TileLayer
         key={activeLayer.name}
