@@ -6,7 +6,6 @@ const withPWA = withPWAInit({
   cacheOnFrontEndNav: true,
   aggressiveFrontEndNavCaching: true,
   reloadOnOnline: true,
-  swcMinify: true,
   disable: process.env.NODE_ENV === "development",
   workboxOptions: {
     disableDevLogs: true,
@@ -57,14 +56,14 @@ const withPWA = withPWAInit({
         options: { cacheName: "next-static" },
       },
     ],
-    fallbacks: {
-      document: "/offline.html",
-    },
+  },
+  fallbacks: {
+    document: "/offline.html",
   },
 });
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  turbopack: {},
 };
 
 export default withPWA(nextConfig);

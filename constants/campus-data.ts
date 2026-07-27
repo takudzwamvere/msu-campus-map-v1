@@ -2,10 +2,10 @@ export interface CampusBuilding {
   Building: string;
   Latitude: number;
   Longitude: number;
-  Description?: string;
-  Poly?: string;
-  Campus?: string;
-  Type?: string;
+  Description?: string | null;
+  Poly?: string | null;
+  Campus?: string | null;
+  Type?: string | null;
 }
 
 export const CAMPUS_BUILDINGS: CampusBuilding[] = [

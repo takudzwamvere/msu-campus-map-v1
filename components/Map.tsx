@@ -7,7 +7,7 @@ import "leaflet-defaulticon-compatibility";
 import { CAMPUS_BUILDINGS, type CampusBuilding } from "../constants/campus-data";
 import { MAP_LAYERS } from "../constants/map-layers";
 import { CAMPUS_BOUNDS_ARRAY } from "../constants/campus-bounds";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import MapRouting, { type RouteSummary } from "./MapRouting";
 import MapLayerControl from "./MapLayerControl";
 import MapLegend from "./MapLegend";
@@ -159,25 +159,27 @@ export default function Map({
     try { localStorage.setItem("msu-heatmap-enabled", String(enabled)); } catch {}
   };
 
-  const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      const nameMatch = building.Building.toLowerCase().includes(q);
-      const descMatch = building.Description?.toLowerCase().includes(q);
-      const typeMatch = building.Type?.toLowerCase().includes(q);
-      if (!nameMatch && !descMatch && !typeMatch) return false;
-    }
-
-    if (activeFilter) {
-      const cat = CATEGORY_STYLES.find(c => c.name === activeFilter);
-      if (cat && building.Type) {
-        const typeLower = building.Type.toLowerCase();
-        if (!cat.keywords.some(k => typeLower.includes(k))) return false;
+  const filteredBuildings = useMemo(() => {
+    return CAMPUS_BUILDINGS.filter((building) => {
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const nameMatch = building.Building.toLowerCase().includes(q);
+        const descMatch = building.Description?.toLowerCase().includes(q);
+        const typeMatch = building.Type?.toLowerCase().includes(q);
+        if (!nameMatch && !descMatch && !typeMatch) return false;
       }
-    }
 
-    return true;
-  });
+      if (activeFilter) {
+        const cat = CATEGORY_STYLES.find((c) => c.name === activeFilter);
+        if (cat && building.Type) {
+          const typeLower = building.Type.toLowerCase();
+          if (!cat.keywords.some((k) => typeLower.includes(k))) return false;
+        }
+      }
+
+      return true;
+    });
+  }, [searchQuery, activeFilter]);
 
   return (
     <MapContainer

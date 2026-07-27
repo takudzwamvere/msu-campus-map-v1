@@ -35,7 +35,7 @@ export async function subscribeToPush(): Promise<PushSubscription | null> {
 
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(vapidKey),
+      applicationServerKey: urlBase64ToUint8Array(vapidKey) as unknown as BufferSource,
     });
 
     await fetch("/api/push-subscribe", {
@@ -62,7 +62,6 @@ export async function scheduleLocalNotification(title: string, body: string, del
         body,
         icon: "/icons/icon-192.png",
         badge: "/icons/icon-72.png",
-        vibrate: [200, 100, 200],
         data: { url: "/" },
       });
     } else {
