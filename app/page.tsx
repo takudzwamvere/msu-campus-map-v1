@@ -8,6 +8,7 @@ import Toast from "@/components/Toast";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import InstallPrompt from "@/components/InstallPrompt";
 import BuildingDetailPanel from "@/components/BuildingDetailPanel";
+import TimetableManager, { ClassAlertBanner } from "@/components/TimetableManager";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { isWithinCampus } from "@/constants/campus-bounds";
 import type { RouteSummary } from "@/components/MapRouting";
@@ -28,6 +29,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showPresencePrompt, setShowPresencePrompt] = useState(false);
+  const [showTimetable, setShowTimetable] = useState(false);
   const userLocationRef = useRef<[number, number] | null>(null);
 
   // Keep ref in sync for presence reporting
@@ -165,6 +167,32 @@ export default function Home() {
           handleGetDirections(lat, lng);
         }}
       />
+
+      {/* Timetable */}
+      <ClassAlertBanner
+        entries={[]}
+        userLocation={userLocation}
+        onGetDirections={handleGetDirections}
+      />
+      <TimetableManager
+        isOpen={showTimetable}
+        onClose={() => setShowTimetable(false)}
+        onGetDirections={handleGetDirections}
+        userLocation={userLocation}
+      />
+
+      {/* Timetable FAB */}
+      <button
+        onClick={() => setShowTimetable(true)}
+        className="fixed left-4 bottom-24 md:bottom-6 z-[2000] w-10 h-10 rounded-xl bg-[#1a1a2e]/90 backdrop-blur-xl border border-white/[0.08] text-gray-300 hover:text-white flex items-center justify-center shadow-lg transition-all hover:bg-[#1a1a2e]"
+        aria-label="Open timetable"
+        title="My Timetable"
+      >
+        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+      </button>
 
       {/* Modals */}
       <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />
