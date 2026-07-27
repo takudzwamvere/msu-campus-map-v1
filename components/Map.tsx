@@ -15,6 +15,8 @@ import { CATEGORY_STYLES, getTypeStyles } from "../constants/campus-styles";
 import { getMarkerIcon } from "../constants/map-marker-utils";
 import AICampusAssistant from "./AICampusAssistant";
 import HeatmapLayer from "./HeatmapLayer";
+import EventsLayer from "./EventsLayer";
+import SafetyReporter from "./SafetyReporter";
 
 const MapBoundsController = () => {
   const map = useMap();
@@ -145,6 +147,9 @@ export default function Map({
   const [heatmapEnabled, setHeatmapEnabled] = useState(() => {
     try { return localStorage.getItem("msu-heatmap-enabled") === "true"; } catch { return false; }
   });
+  const [eventsEnabled, setEventsEnabled] = useState(true);
+  const [safetyEnabled, setSafetyEnabled] = useState(true);
+  const [isPinDropMode, setIsPinDropMode] = useState(false);
   const showLabels = mapZoom >= 18;
 
   const handleHeatmapToggle = (enabled: boolean) => {
@@ -155,24 +160,26 @@ export default function Map({
   const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      const matchName = building.Building.toLowerCase().includes(q);
-      const matchDesc = building.Description?.toLowerCase().includes(q);
-      if (!matchName && !matchDesc) return false;
+      const nameMatch = building.Building.toLowerCase().includes(q);
+      const descMatch = building.Description?.toLowerCase().includes(q);
+      const typeMatch = building.Type?.toLowerCase().includes(q);
+      if (!nameMatch && !descMatch && !typeMatch) return false;
     }
+
     if (activeFilter) {
-      const type = (building.Type || "").toLowerCase();
-      const matchedCategory = CATEGORY_STYLES.find(cat => cat.name === activeFilter);
-      if (matchedCategory) {
-        return matchedCategory.keywords.some(keyword => type.includes(keyword));
+      const cat = CATEGORY_STYLES.find(c => c.name === activeFilter);
+      if (cat && building.Type) {
+        const typeLower = building.Type.toLowerCase();
+        if (!cat.keywords.some(k => typeLower.includes(k))) return false;
       }
-      return type.includes(activeFilter.toLowerCase());
     }
+
     return true;
   });
 
   return (
     <MapContainer
-      center={[-19.51176, 29.83583]}
+      center={[-19.5118, 29.8358]}
       zoom={16}
       minZoom={15}
       maxBoundsViscosity={1.0}
@@ -186,7 +193,6 @@ export default function Map({
       <ZoomTracker onZoomChange={setMapZoom} />
       <MapClickHandler pendingDestination={pendingDestination} onLocationSet={onMapLocationSet} />
       <MyLocationButton onLocate={(pos) => {
-        // Surface the located position to the parent via userLocation if needed
         // Currently just pans the map — full GPS flow remains via handleGetDirections
       }} />
 
@@ -210,11 +216,33 @@ export default function Map({
           onLayerSelect={setActiveLayer}
           heatmapEnabled={heatmapEnabled}
           onHeatmapToggle={handleHeatmapToggle}
+          eventsEnabled={eventsEnabled}
+          onEventsToggle={setEventsEnabled}
+          safetyEnabled={safetyEnabled}
+          onSafetyToggle={setSafetyEnabled}
         />
       </div>
 
       {/* Crowd heatmap overlay */}
       <HeatmapLayer enabled={heatmapEnabled} />
+
+      {/* Campus events overlay */}
+      <EventsLayer enabled={eventsEnabled} />
+
+      {/* Safety incidents overlay */}
+      <SafetyReporter
+        enabled={safetyEnabled}
+        isPinDropMode={isPinDropMode}
+        onPinDropped={(lat, lng) => {
+          setIsPinDropMode(false);
+          // Post safety report
+          fetch("/api/report", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ lat, lng, category: "other", description: "Reported incident by user" }),
+          }).then(() => window.location.reload());
+        }}
+      />
 
       {/* Legend — bottom right, above zoom */}
       <div
