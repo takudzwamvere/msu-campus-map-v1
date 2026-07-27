@@ -94,10 +94,22 @@ export const metadata: Metadata = {
     images: ["/og-image.png"],
   },
 
-  manifest: "/manifest.ts",
+  manifest: "/manifest.webmanifest",
+
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "MSU Map",
+  },
+
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+  },
 
   other: {
-    "theme-color": "#000000",
+    "theme-color": "#1a1a2e",
 
     "application/ld+json": JSON.stringify([
       // Schema 1: The map tool itself
