@@ -13,6 +13,7 @@ interface MapProps {
   onRouteSummary?: (summary: import("./MapRouting").RouteSummary) => void;
   pendingDestination: [number, number] | null;
   onMapLocationSet: (lat: number, lng: number) => void;
+  onBuildingSelect?: (building: import("../constants/campus-data").CampusBuilding) => void;
 }
 
 const Map = dynamic(() => import("./Map"), {

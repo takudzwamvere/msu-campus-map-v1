@@ -1,4 +1,14 @@
-export const CAMPUS_BUILDINGS = [
+export interface CampusBuilding {
+  Building: string;
+  Latitude: number;
+  Longitude: number;
+  Description?: string;
+  Poly?: string;
+  Campus?: string;
+  Type?: string;
+}
+
+export const CAMPUS_BUILDINGS: CampusBuilding[] = [
     {
         "Building": "China A",
         "Latitude": -19.511217017802938,

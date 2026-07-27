@@ -7,9 +7,11 @@ import WelcomeModal from "@/components/WelcomeModal";
 import Toast from "@/components/Toast";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import InstallPrompt from "@/components/InstallPrompt";
+import BuildingDetailPanel from "@/components/BuildingDetailPanel";
 import { useState, useEffect, useCallback } from "react";
 import { isWithinCampus } from "@/constants/campus-bounds";
 import type { RouteSummary } from "@/components/MapRouting";
+import type { CampusBuilding } from "@/constants/campus-data";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -18,6 +20,7 @@ export default function Home() {
   const [destination, setDestination] = useState<[number, number] | null>(null);
   const [focusedLocation, setFocusedLocation] = useState<[number, number] | null>(null);
   const [selectedBuilding, setSelectedBuilding] = useState<string | null>(null);
+  const [selectedBuildingDetail, setSelectedBuildingDetail] = useState<CampusBuilding | null>(null);
   const [routeSummary, setRouteSummary] = useState<RouteSummary | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [pendingDestination, setPendingDestination] = useState<[number, number] | null>(null);
@@ -85,6 +88,12 @@ export default function Home() {
     if (buildingName) setSelectedBuilding(buildingName);
   };
 
+  const handleBuildingSelect = (building: CampusBuilding) => {
+    setSelectedBuildingDetail(building);
+    setSelectedBuilding(building.Building);
+    setFocusedLocation([building.Latitude, building.Longitude]);
+  };
+
   const handlePlannedRoute = (fromLat: number, fromLng: number, toLat: number, toLng: number) => {
     setUserLocation([fromLat, fromLng]);
     setDestination([toLat, toLng]);
@@ -113,6 +122,7 @@ export default function Home() {
         onRouteSummary={setRouteSummary}
         pendingDestination={pendingDestination}
         onMapLocationSet={handleMapLocationSet}
+        onBuildingSelect={handleBuildingSelect}
       />
 
       {/* Floating Search / Sidebar */}
@@ -127,6 +137,16 @@ export default function Home() {
         activeFilter={activeFilter}
         onFilterChange={setActiveFilter}
         routeSummary={routeSummary}
+      />
+
+      {/* Building Detail Panel */}
+      <BuildingDetailPanel
+        building={selectedBuildingDetail}
+        onClose={() => setSelectedBuildingDetail(null)}
+        onGetDirections={(lat, lng) => {
+          setSelectedBuildingDetail(null);
+          handleGetDirections(lat, lng);
+        }}
       />
 
       {/* Modals */}

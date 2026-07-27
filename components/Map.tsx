@@ -4,7 +4,7 @@ import { MapContainer, TileLayer, Marker, Popup, useMap, useMapEvents, ZoomContr
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
 import "leaflet-defaulticon-compatibility";
-import { CAMPUS_BUILDINGS } from "../constants/campus-data";
+import { CAMPUS_BUILDINGS, type CampusBuilding } from "../constants/campus-data";
 import { MAP_LAYERS } from "../constants/map-layers";
 import { CAMPUS_BOUNDS_ARRAY } from "../constants/campus-bounds";
 import { useState, useEffect } from "react";
@@ -122,6 +122,7 @@ export default function Map({
   onRouteSummary,
   pendingDestination,
   onMapLocationSet,
+  onBuildingSelect,
 }: {
   searchQuery: string;
   activeFilter: string | null;
@@ -133,6 +134,7 @@ export default function Map({
   onRouteSummary?: (summary: RouteSummary) => void;
   pendingDestination: [number, number] | null;
   onMapLocationSet: (lat: number, lng: number) => void;
+  onBuildingSelect?: (building: CampusBuilding) => void;
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
   const [mapZoom, setMapZoom] = useState(16);
@@ -217,6 +219,9 @@ export default function Map({
             position={[building.Latitude, building.Longitude]}
             icon={getMarkerIcon(building.Type || "Unknown", building.Building, isSelected, showLabels)}
             zIndexOffset={isSelected ? 1000 : 0}
+            eventHandlers={{
+              click: () => onBuildingSelect?.(building),
+            }}
           >
             <Popup className="custom-popup" closeButton={false}>
               <div className="min-w-[220px] max-w-[280px]">
@@ -237,13 +242,15 @@ export default function Map({
                   )}
 
                   <button
-                    onClick={() => onGetDirections(building.Latitude, building.Longitude)}
+                    onClick={() => {
+                      onBuildingSelect?.(building);
+                    }}
                     className="flex items-center gap-1.5 text-blue-400 hover:text-blue-300 text-sm font-semibold transition-colors bg-transparent border-none p-0 cursor-pointer"
                   >
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                     </svg>
-                    Get Directions
+                    View Details
                   </button>
                 </div>
               </div>
