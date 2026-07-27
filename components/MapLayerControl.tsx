@@ -12,6 +12,8 @@ interface MapLayerControlProps {
   onEventsToggle?: (enabled: boolean) => void;
   safetyEnabled?: boolean;
   onSafetyToggle?: (enabled: boolean) => void;
+  mode3dEnabled?: boolean;
+  onMode3dToggle?: (enabled: boolean) => void;
 }
 
 export default function MapLayerControl({
@@ -23,6 +25,8 @@ export default function MapLayerControl({
   onEventsToggle,
   safetyEnabled = true,
   onSafetyToggle,
+  mode3dEnabled = false,
+  onMode3dToggle,
 }: MapLayerControlProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -159,6 +163,22 @@ export default function MapLayerControl({
                 <span className="flex items-center gap-2">⚠️ Safety Reports</span>
                 <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${safetyEnabled ? "bg-amber-500/30 text-amber-200" : "bg-white/[0.06] text-gray-500"}`}>
                   {safetyEnabled ? "ON" : "OFF"}
+                </span>
+              </button>
+
+              <button
+                onClick={() => onMode3dToggle?.(!mode3dEnabled)}
+                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl border transition-all text-xs font-semibold ${
+                  mode3dEnabled
+                    ? "bg-purple-500/15 border-purple-500/30 text-purple-300"
+                    : "bg-white/[0.04] border-white/[0.06] text-gray-400 hover:text-gray-200 hover:bg-white/[0.07]"
+                }`}
+                aria-pressed={mode3dEnabled}
+                aria-label="Toggle 3D buildings view"
+              >
+                <span className="flex items-center gap-2">🏢 3D Buildings</span>
+                <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold ${mode3dEnabled ? "bg-purple-500/30 text-purple-200" : "bg-white/[0.06] text-gray-500"}`}>
+                  {mode3dEnabled ? "ON" : "OFF"}
                 </span>
               </button>
             </div>

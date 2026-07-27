@@ -17,6 +17,7 @@ import AICampusAssistant from "./AICampusAssistant";
 import HeatmapLayer from "./HeatmapLayer";
 import EventsLayer from "./EventsLayer";
 import SafetyReporter from "./SafetyReporter";
+import Map3DMode from "./Map3DMode";
 
 const MapBoundsController = () => {
   const map = useMap();
@@ -149,6 +150,7 @@ export default function Map({
   });
   const [eventsEnabled, setEventsEnabled] = useState(true);
   const [safetyEnabled, setSafetyEnabled] = useState(true);
+  const [mode3dEnabled, setMode3dEnabled] = useState(false);
   const [isPinDropMode, setIsPinDropMode] = useState(false);
   const showLabels = mapZoom >= 18;
 
@@ -220,6 +222,8 @@ export default function Map({
           onEventsToggle={setEventsEnabled}
           safetyEnabled={safetyEnabled}
           onSafetyToggle={setSafetyEnabled}
+          mode3dEnabled={mode3dEnabled}
+          onMode3dToggle={setMode3dEnabled}
         />
       </div>
 
@@ -228,6 +232,9 @@ export default function Map({
 
       {/* Campus events overlay */}
       <EventsLayer enabled={eventsEnabled} />
+
+      {/* 3D Buildings overlay */}
+      <Map3DMode enabled={mode3dEnabled} />
 
       {/* Safety incidents overlay */}
       <SafetyReporter
