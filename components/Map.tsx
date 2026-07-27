@@ -14,6 +14,7 @@ import MapLegend from "./MapLegend";
 import { CATEGORY_STYLES, getTypeStyles } from "../constants/campus-styles";
 import { getMarkerIcon } from "../constants/map-marker-utils";
 import AICampusAssistant from "./AICampusAssistant";
+import HeatmapLayer from "./HeatmapLayer";
 
 const MapBoundsController = () => {
   const map = useMap();
@@ -141,7 +142,15 @@ export default function Map({
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
   const [mapZoom, setMapZoom] = useState(16);
+  const [heatmapEnabled, setHeatmapEnabled] = useState(() => {
+    try { return localStorage.getItem("msu-heatmap-enabled") === "true"; } catch { return false; }
+  });
   const showLabels = mapZoom >= 18;
+
+  const handleHeatmapToggle = (enabled: boolean) => {
+    setHeatmapEnabled(enabled);
+    try { localStorage.setItem("msu-heatmap-enabled", String(enabled)); } catch {}
+  };
 
   const filteredBuildings = CAMPUS_BUILDINGS.filter((building) => {
     if (searchQuery) {
@@ -199,8 +208,13 @@ export default function Map({
         <MapLayerControl
           activeLayerName={activeLayer.name}
           onLayerSelect={setActiveLayer}
+          heatmapEnabled={heatmapEnabled}
+          onHeatmapToggle={handleHeatmapToggle}
         />
       </div>
+
+      {/* Crowd heatmap overlay */}
+      <HeatmapLayer enabled={heatmapEnabled} />
 
       {/* Legend — bottom right, above zoom */}
       <div

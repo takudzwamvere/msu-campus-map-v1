@@ -8,10 +8,11 @@ import Toast from "@/components/Toast";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import InstallPrompt from "@/components/InstallPrompt";
 import BuildingDetailPanel from "@/components/BuildingDetailPanel";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { isWithinCampus } from "@/constants/campus-bounds";
 import type { RouteSummary } from "@/components/MapRouting";
 import type { CampusBuilding } from "@/constants/campus-data";
+import { startPresence, stopPresence } from "@/lib/presence";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -26,6 +27,11 @@ export default function Home() {
   const [pendingDestination, setPendingDestination] = useState<[number, number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showPresencePrompt, setShowPresencePrompt] = useState(false);
+  const userLocationRef = useRef<[number, number] | null>(null);
+
+  // Keep ref in sync for presence reporting
+  useEffect(() => { userLocationRef.current = userLocation; }, [userLocation]);
 
   useEffect(() => {
     try {
@@ -60,6 +66,16 @@ export default function Home() {
         setUserLocation([userLat, userLng]);
         if (!isWithinCampus(userLat, userLng)) setIsModalOpen(true);
         setDestination([lat, lng]);
+
+        // Show presence opt-in if on campus and not already decided
+        try {
+          const decided = localStorage.getItem("msu-presence-consent");
+          if (!decided && isWithinCampus(userLat, userLng)) {
+            setShowPresencePrompt(true);
+          } else if (decided === "yes") {
+            startPresence(() => userLocationRef.current);
+          }
+        } catch {}
       },
       (error) => {
         console.error("Error getting location:", error);
@@ -185,6 +201,39 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Presence opt-in prompt */}
+      {showPresencePrompt && (
+        <div className="fixed bottom-24 md:bottom-6 left-1/2 -translate-x-1/2 z-[4500] w-[calc(100%-32px)] max-w-sm">
+          <div className="bg-[#1a1a2e]/95 backdrop-blur-xl border border-white/[0.10] rounded-2xl shadow-2xl shadow-black/60 p-4">
+            <p className="text-white text-sm font-semibold mb-1">Help others find quiet spots 🔥</p>
+            <p className="text-gray-400 text-xs mb-3 leading-relaxed">
+              Share your anonymous location to power the crowd heatmap. No personal data stored.
+            </p>
+            <div className="flex gap-2">
+              <button
+                onClick={() => {
+                  try { localStorage.setItem("msu-presence-consent", "no"); } catch {}
+                  setShowPresencePrompt(false);
+                }}
+                className="flex-1 py-2 rounded-xl border border-white/[0.08] text-gray-400 text-xs font-semibold hover:bg-white/[0.05] transition-all"
+              >
+                No thanks
+              </button>
+              <button
+                onClick={() => {
+                  try { localStorage.setItem("msu-presence-consent", "yes"); } catch {}
+                  setShowPresencePrompt(false);
+                  startPresence(() => userLocationRef.current);
+                }}
+                className="flex-1 py-2 rounded-xl bg-orange-500/20 border border-orange-500/30 text-orange-300 text-xs font-bold hover:bg-orange-500/30 transition-all"
+              >
+                Yes, enable heatmap
+              </button>
+            </div>
           </div>
         </div>
       )}
