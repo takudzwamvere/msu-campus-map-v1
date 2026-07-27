@@ -5,6 +5,8 @@ import Sidebar from "@/components/Sidebar";
 import Modal from "@/components/Modal";
 import WelcomeModal from "@/components/WelcomeModal";
 import Toast from "@/components/Toast";
+import OfflineIndicator from "@/components/OfflineIndicator";
+import InstallPrompt from "@/components/InstallPrompt";
 import { useState, useEffect, useCallback } from "react";
 import { isWithinCampus } from "@/constants/campus-bounds";
 import type { RouteSummary } from "@/components/MapRouting";
@@ -183,6 +185,8 @@ export default function Home() {
           </div>
         </div>
       </Modal>
+      <OfflineIndicator />
+      <InstallPrompt />
     </main>
   );
 }
