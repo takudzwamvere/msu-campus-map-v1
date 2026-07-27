@@ -4,6 +4,8 @@ import { useEffect, useState, useRef } from "react";
 import { getBuildingExtras } from "@/constants/building-extras";
 import { getTypeStyles } from "@/constants/campus-styles";
 import type { CampusBuilding } from "@/constants/campus-data";
+import { fetchBuildingContributions, type BuildingContribution } from "@/lib/supabase";
+import ContributionForm from "./ContributionForm";
 
 interface BuildingDetailPanelProps {
   building: CampusBuilding | null;
@@ -31,19 +33,32 @@ export default function BuildingDetailPanel({
 }: BuildingDetailPanelProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [contributions, setContributions] = useState<BuildingContribution[]>([]);
+  const [showContribForm, setShowContribForm] = useState(false);
+  const [votedIds, setVotedIds] = useState<Set<string>>(new Set());
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Animate in/out
+  // Load contributions
   useEffect(() => {
     if (building) {
       setLoading(true);
       setIsVisible(true);
-      const t = setTimeout(() => setLoading(false), 400); // simulate data load
-      return () => clearTimeout(t);
+      fetchBuildingContributions(building.Building).then((data) => {
+        setContributions(data);
+        setLoading(false);
+      });
     } else {
       setIsVisible(false);
     }
   }, [building]);
+
+  const handleUpvote = (id: string) => {
+    if (votedIds.has(id)) return;
+    setVotedIds((prev) => new Set(prev).add(id));
+    setContributions((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, upvotes: c.upvotes + 1 } : c))
+    );
+  };
 
   // Close on Escape
   useEffect(() => {
@@ -224,6 +239,50 @@ export default function BuildingDetailPanel({
             </div>
           )}
 
+          {/* Community Contributions */}
+          {!loading && (
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <p className="text-[10px] font-bold uppercase tracking-wider text-gray-500">Student Contributions</p>
+                <button
+                  onClick={() => setShowContribForm(true)}
+                  className="text-[11px] font-semibold text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  + Add Info
+                </button>
+              </div>
+
+              {contributions.length === 0 ? (
+                <p className="text-xs text-gray-600 italic">No community tips yet. Be the first to contribute!</p>
+              ) : (
+                <div className="space-y-2">
+                  {contributions.map((c) => (
+                    <div key={c.id} className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs space-y-1.5">
+                      <div className="flex items-center justify-between text-gray-400 text-[11px]">
+                        <span className="font-semibold text-gray-300">{c.contributor_name || "Anonymous"}</span>
+                        <span className="capitalize text-[10px] px-1.5 py-0.5 rounded bg-white/[0.06]">{c.contribution_type}</span>
+                      </div>
+                      <p className="text-gray-300 leading-relaxed">{c.content}</p>
+                      <div className="flex items-center justify-end pt-1">
+                        <button
+                          onClick={() => handleUpvote(c.id)}
+                          disabled={votedIds.has(c.id)}
+                          className={`flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-lg border transition-all ${
+                            votedIds.has(c.id)
+                              ? "bg-blue-500/20 text-blue-300 border-blue-500/30"
+                              : "bg-white/[0.04] text-gray-400 border-white/[0.06] hover:text-white"
+                          }`}
+                        >
+                          👍 <span>{c.upvotes}</span>
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+
           {/* Location */}
           {!loading && (
             <div>
@@ -237,6 +296,14 @@ export default function BuildingDetailPanel({
             </div>
           )}
         </div>
+
+        {/* Contribution Form Modal */}
+        <ContributionForm
+          buildingName={building.Building}
+          isOpen={showContribForm}
+          onClose={() => setShowContribForm(false)}
+          onSubmitted={(newContrib) => setContributions((prev) => [newContrib, ...prev])}
+        />
 
         {/* ── Footer CTA ─────────────────────────────────────────────────── */}
         <div className="sticky bottom-0 px-5 py-4 bg-[#13151f]/95 backdrop-blur-xl border-t border-white/[0.07]">
