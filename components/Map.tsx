@@ -13,6 +13,7 @@ import MapLayerControl from "./MapLayerControl";
 import MapLegend from "./MapLegend";
 import { CATEGORY_STYLES, getTypeStyles } from "../constants/campus-styles";
 import { getMarkerIcon } from "../constants/map-marker-utils";
+import AICampusAssistant from "./AICampusAssistant";
 
 const MapBoundsController = () => {
   const map = useMap();
@@ -123,6 +124,7 @@ export default function Map({
   pendingDestination,
   onMapLocationSet,
   onBuildingSelect,
+  onFlyTo,
 }: {
   searchQuery: string;
   activeFilter: string | null;
@@ -135,6 +137,7 @@ export default function Map({
   pendingDestination: [number, number] | null;
   onMapLocationSet: (lat: number, lng: number) => void;
   onBuildingSelect?: (building: CampusBuilding) => void;
+  onFlyTo?: (lat: number, lng: number, name: string) => void;
 }) {
   const [activeLayer, setActiveLayer] = useState(MAP_LAYERS.find(l => l.checked) || MAP_LAYERS[0]);
   const [mapZoom, setMapZoom] = useState(16);
@@ -207,6 +210,9 @@ export default function Map({
       >
         <MapLegend />
       </div>
+
+      {/* AI Campus Assistant — floating FAB + chat panel */}
+      <AICampusAssistant onFlyTo={onFlyTo} />
 
       <MapRouting userLocation={userLocation} destination={destination} onRouteSummary={onRouteSummary} />
 

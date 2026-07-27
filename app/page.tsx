@@ -123,6 +123,7 @@ export default function Home() {
         pendingDestination={pendingDestination}
         onMapLocationSet={handleMapLocationSet}
         onBuildingSelect={handleBuildingSelect}
+        onFlyTo={(lat, lng, name) => handleFlyTo(lat, lng, name)}
       />
 
       {/* Floating Search / Sidebar */}

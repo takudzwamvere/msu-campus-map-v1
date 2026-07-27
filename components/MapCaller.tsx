@@ -14,6 +14,7 @@ interface MapProps {
   pendingDestination: [number, number] | null;
   onMapLocationSet: (lat: number, lng: number) => void;
   onBuildingSelect?: (building: import("../constants/campus-data").CampusBuilding) => void;
+  onFlyTo?: (lat: number, lng: number, name: string) => void;
 }
 
 const Map = dynamic(() => import("./Map"), {
