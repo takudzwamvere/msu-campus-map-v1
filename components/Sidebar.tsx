@@ -43,6 +43,7 @@ export default function Sidebar({
   const [activePlanField, setActivePlanField] = useState<"from" | "to" | null>(null);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const mobileInputRef = useRef<HTMLInputElement>(null);
+  const desktopInputRef = useRef<HTMLInputElement>(null);
 
   // Search logic
   useEffect(() => {
@@ -83,7 +84,7 @@ export default function Sidebar({
     }
   }, [planToQuery]);
 
-  // Click-outside & Escape handlers
+  // Click-outside, Cmd+K / Slash key, & Escape handlers
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
@@ -94,6 +95,12 @@ export default function Sidebar({
       if (e.key === "Escape") {
         setShowSuggestions(false);
         setMobileExpanded(false);
+      }
+      const activeEl = document.activeElement;
+      const isInput = activeEl?.tagName === "INPUT" || activeEl?.tagName === "TEXTAREA";
+      if (!isInput && (e.key === "/" || ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k"))) {
+        e.preventDefault();
+        desktopInputRef.current?.focus() || mobileInputRef.current?.focus();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -241,15 +248,22 @@ export default function Sidebar({
               </svg>
             </div>
             <input
+              ref={desktopInputRef}
               type="text"
+              aria-label="Search campus buildings"
               placeholder="Search campus..."
               value={searchQuery}
               onChange={(e) => onSearch(e.target.value)}
               onFocus={() => { if (searchQuery.length > 1) setShowSuggestions(true); }}
               className="flex-1 bg-transparent text-white placeholder-gray-500 py-3.5 px-2 text-[15px] outline-none"
             />
+            {!searchQuery && (
+              <kbd className="hidden lg:inline-flex items-center px-1.5 py-0.5 mr-2 text-[10px] font-semibold text-gray-400 bg-white/[0.06] border border-white/[0.1] rounded select-none pointer-events-none">
+                ⌘K
+              </kbd>
+            )}
             {searchQuery && (
-              <button onClick={clearSearch} className="pr-2 text-gray-500 hover:text-white transition-colors">
+              <button onClick={clearSearch} aria-label="Clear search query" className="pr-2 text-gray-500 hover:text-white transition-colors">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             )}
