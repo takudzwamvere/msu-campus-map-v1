@@ -205,10 +205,22 @@ export default function AICampusAssistant({ onFlyTo }: AICampusAssistantProps) {
                 <p className="text-white text-xs font-bold">Campus Assistant</p>
                 <p className="text-gray-500 text-[10px]">Powered by AI · MSU Gweru</p>
               </div>
-              <span className="ml-auto flex items-center gap-1.5 text-[10px] text-emerald-400 font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Online
-              </span>
+              <div className="ml-auto flex items-center gap-2">
+                {messages.length > 0 && (
+                  <button
+                    onClick={() => setMessages([])}
+                    title="Clear conversation"
+                    aria-label="Clear chat history"
+                    className="text-[10px] text-gray-400 hover:text-white px-2 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] transition-colors"
+                  >
+                    Clear
+                  </button>
+                )}
+                <span className="flex items-center gap-1.5 text-[10px] text-emerald-400 font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  Online
+                </span>
+              </div>
             </div>
 
             {/* Messages */}
