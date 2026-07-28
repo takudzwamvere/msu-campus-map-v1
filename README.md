@@ -1,34 +1,47 @@
 # MSU Campus Map — Revolutionary Edition
 
-This is an interactive, open-source campus map for Midlands State University, built with [Next.js](https://nextjs.org) and [Leaflet](https://leafletjs.com/). Designed to help students, staff, and visitors navigate the Gweru main campus with ease.
+This is an interactive, modern campus map application for Midlands State University (Gweru Main Campus), built with [Next.js](https://nextjs.org) and [Leaflet](https://leafletjs.com/). Designed to assist students, faculty, staff, and visitors with navigation, class scheduling, AI assistance, and real-time campus awareness.
 
 ---
 
-## 🚀 Revolutionary Features
+## 🚀 Key Features & Capabilities
 
-- **📱 Offline PWA Support**: Workbox service worker tile caching, full Web App Manifest, offline fallback page, and instant install prompt.
-- **🏛️ Rich Building Detail Panels**: Slide-in details with opening hours, occupancy capacity bars, amenities chips (Wi-Fi, Accessibility, Floors), and admin notes.
-- **🤖 AI Campus Assistant**: Streaming AI chat widget with full campus context that answers location questions and directly pans/highlights points on the map.
-- **🔥 Crowdedness Heatmap**: Anonymous presence signal collection and 30m grid bucketization rendering real-time crowd heatmaps.
-- **📅 Student Timetable & Class Alerts**: Class schedule manager with manual entry, day filtering, live countdowns, and walking distance arrival alerts.
-- **🤝 Crowdsourced Building Data**: Community tips, opening hour updates, and crowd warnings with upvoting and moderation stubs.
-- **🎉 Geo-Pinned Campus Events**: Real-time event markers (academic, sports, social, ceremonies) with popups and `.ics` calendar downloads.
-- **⚠️ Safety Incident Reporter**: Drop-pin safety hazard reporting (lighting, flooding, path hazards) with auto-expiring 48-hour markers and community confirmations.
-- **🏢 3D Building Extrusions**: CSS 3D perspective transform mode with SVG polygon overlays for major campus building footprints at high zoom levels.
+- **📱 Progressive Web App (PWA)**: Offline tile caching via Workbox, Web App Manifest, offline fallback screen, and PWA install prompt.
+- **⌨️ Keyboard Shortcuts & Quick Search**: Press `⌘K` or `/` to focus search instantly; press `?` for interactive hotkey reference modal.
+- **🏛️ Rich Building Detail Panels**: Slide-in info drawer with opening hours, capacity utilization meters, amenities chips (Wi-Fi, Wheelchair Accessibility, Floor counts), and quick location sharing.
+- **🤖 Streaming AI Campus Assistant**: Intelligent conversational assistant powered by AI with campus knowledge graph integration that auto-pans and highlights destinations.
+- **📅 Timetable Manager & JSON Export**: Class schedule manager with day filtering, walking distance alerts, countdown timers, and full `.json` schedule export / backup.
+- **🔥 Anonymous Crowdedness Heatmap**: Privacy-first opt-in presence signals aggregated into dynamic heatmaps.
+- **📍 Quick Campus View Reset**: One-tap recenter control button to restore camera focus to main campus grounds.
+- **🤝 Student Community Contributions**: Community tips, opening hour updates, and crowd alerts with voting feedback.
+- **🎉 Geo-Pinned Campus Events**: Live event pins (academic, social, sports, ceremonies) with direct map popups.
+- **⚠️ Safety Incident Reporting**: Interactive hazard pin dropping (lighting, path obstruction, flooding) with auto-expiring markers.
+- **🏢 3D Perspective Mode**: CSS 3D extrusion perspective toggle with SVG polygon building footprints.
 
 ---
 
-## 🛠️ Tech Stack
+## ⌨️ Keyboard Shortcuts
 
-- **Framework**: [Next.js 16 (App Router)](https://nextjs.org/)
-- **Frontend**: [React 19](https://react.dev/) & [TypeScript](https://www.typescriptlang.org/)
-- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Mapping & Overlays**: [React Leaflet](https://react-leaflet.js.org/), `leaflet-heat`, [Leaflet Routing Machine](https://www.liedman.net/leaflet-routing-machine/)
+| Shortcut | Action |
+| --- | --- |
+| `⌘ K` / `/` | Focus campus search bar |
+| `?` | Toggle keyboard shortcuts modal |
+| `Esc` | Close drawers, modals, or clear active route |
+| `+` / `-` | Zoom in / out on interactive map |
+
+---
+
+## 🛠️ Tech Stack & Architecture
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript & React 19
+- **Styling**: Tailwind CSS v4 with custom dark mode glassmorphism
+- **Maps Engine**: Leaflet, React Leaflet, Leaflet Routing Machine, `leaflet-heat`
 - **PWA Engine**: `@ducanh2912/next-pwa` & Workbox
 
 ---
 
-## ⚙️ Environment Variables
+## ⚙️ Environment Configuration
 
 Copy `.env.local.example` to `.env.local`:
 
@@ -59,16 +72,19 @@ NEXT_PUBLIC_VAPID_PUBLIC_KEY=your-vapid-key
    npm install --legacy-peer-deps
    ```
 
-3. **Run the development server**:
+3. **Development Mode**:
    ```bash
    npm run dev
    ```
 
-4. **Open the application**:
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+4. **Production Build**:
+   ```bash
+   npm run build
+   npm run start
+   ```
 
 ---
 
 <p align="center">
-  Built with ❤️ for the MSU Community
+  Built with ❤️ for the Midlands State University Community
 </p>
