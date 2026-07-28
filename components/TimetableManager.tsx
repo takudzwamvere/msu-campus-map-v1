@@ -167,11 +167,31 @@ export default function TimetableManager({ isOpen, onClose, onGetDirections, use
             <h2 className="text-white font-bold text-base">My Timetable</h2>
             <p className="text-gray-500 text-xs mt-0.5">{entries.length} class{entries.length !== 1 ? "es" : ""} scheduled</p>
           </div>
-          <button onClick={onClose} className="p-2 rounded-xl text-gray-500 hover:text-white hover:bg-white/[0.07] transition-all" aria-label="Close timetable">
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <div className="flex items-center gap-2">
+            {entries.length > 0 && (
+              <button
+                onClick={() => {
+                  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(entries, null, 2));
+                  const anchor = document.createElement("a");
+                  anchor.setAttribute("href", dataStr);
+                  anchor.setAttribute("download", "msu-timetable.json");
+                  document.body.appendChild(anchor);
+                  anchor.click();
+                  anchor.remove();
+                }}
+                title="Export schedule as JSON"
+                aria-label="Export timetable JSON"
+                className="text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] text-gray-300 transition-colors"
+              >
+                Export
+              </button>
+            )}
+            <button onClick={onClose} className="p-2 rounded-xl text-gray-500 hover:text-white hover:bg-white/[0.07] transition-all" aria-label="Close timetable">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Day filter tabs */}
