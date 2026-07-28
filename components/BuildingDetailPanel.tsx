@@ -36,6 +36,7 @@ export default function BuildingDetailPanel({
   const [contributions, setContributions] = useState<BuildingContribution[]>([]);
   const [showContribForm, setShowContribForm] = useState(false);
   const [votedIds, setVotedIds] = useState<Set<string>>(new Set());
+  const [copiedLink, setCopiedLink] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Load contributions
@@ -306,10 +307,31 @@ export default function BuildingDetailPanel({
         />
 
         {/* ── Footer CTA ─────────────────────────────────────────────────── */}
-        <div className="sticky bottom-0 px-5 py-4 bg-[#13151f]/95 backdrop-blur-xl border-t border-white/[0.07]">
+        <div className="sticky bottom-0 px-5 py-4 bg-[#13151f]/95 backdrop-blur-xl border-t border-white/[0.07] flex gap-2">
+          <button
+            onClick={() => {
+              const url = `${window.location.origin}/?search=${encodeURIComponent(building.Building)}`;
+              if (navigator.share) {
+                navigator.share({ title: building.Building, url }).catch(() => {});
+              } else {
+                navigator.clipboard.writeText(url);
+                setCopiedLink(true);
+                setTimeout(() => setCopiedLink(false), 2000);
+              }
+            }}
+            title="Share or copy building link"
+            aria-label="Share building location"
+            className="px-3.5 py-3 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-gray-300 hover:text-white font-semibold text-xs transition-all flex items-center gap-1.5 shrink-0"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            <span>{copiedLink ? "Copied!" : "Share"}</span>
+          </button>
+
           <button
             onClick={() => onGetDirections(building.Latitude, building.Longitude)}
-            className="w-full py-3 rounded-xl bg-blue-500 hover:bg-blue-400 active:scale-[0.98] text-white font-bold text-sm transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
+            className="flex-1 py-3 rounded-xl bg-blue-500 hover:bg-blue-400 active:scale-[0.98] text-white font-bold text-sm transition-all shadow-lg shadow-blue-500/20 flex items-center justify-center gap-2"
             aria-label={`Get directions to ${building.Building}`}
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
