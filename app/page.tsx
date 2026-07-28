@@ -9,6 +9,7 @@ import OfflineIndicator from "@/components/OfflineIndicator";
 import InstallPrompt from "@/components/InstallPrompt";
 import BuildingDetailPanel from "@/components/BuildingDetailPanel";
 import TimetableManager, { ClassAlertBanner } from "@/components/TimetableManager";
+import ShortcutsModal from "@/components/ShortcutsModal";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { isWithinCampus } from "@/constants/campus-bounds";
 import type { RouteSummary } from "@/components/MapRouting";
@@ -28,6 +29,7 @@ export default function Home() {
   const [pendingDestination, setPendingDestination] = useState<[number, number] | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
   const [showPresencePrompt, setShowPresencePrompt] = useState(false);
   const [showTimetable, setShowTimetable] = useState(false);
   const userLocationRef = useRef<[number, number] | null>(null);
@@ -196,21 +198,36 @@ export default function Home() {
 
       {/* Modals */}
       <WelcomeModal isOpen={showWelcome} onClose={() => setShowWelcome(false)} />
+      <ShortcutsModal isOpen={showShortcuts} onClose={() => setShowShortcuts(false)} />
       <Toast message={toastMessage} onDismiss={() => setToastMessage(null)} />
 
-      {/* About / re-open welcome button — bottom-left, above mobile sidebar */}
-      {!showWelcome && (
+      {/* Action FABs — bottom-left */}
+      <div className="fixed bottom-24 md:bottom-4 left-4 z-[2500] flex items-center gap-2">
+        {!showWelcome && (
+          <button
+            onClick={() => setShowWelcome(true)}
+            aria-label="About map"
+            title="About this map"
+            className="w-9 h-9 rounded-xl bg-[#1a1a2e]/90 backdrop-blur-xl border border-white/[0.08] shadow-lg text-gray-400 hover:text-white hover:bg-[#1a1a2e] transition-all flex items-center justify-center"
+          >
+            <svg className="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </button>
+        )}
+
         <button
-          onClick={() => setShowWelcome(true)}
-          title="About this map"
-          className="fixed bottom-24 md:bottom-4 left-4 z-[2500] w-9 h-9 rounded-xl bg-[#1a1a2e]/90 backdrop-blur-xl border border-white/[0.08] shadow-lg text-gray-400 hover:text-white hover:bg-[#1a1a2e] transition-all flex items-center justify-center"
+          onClick={() => setShowShortcuts(true)}
+          aria-label="Keyboard shortcuts"
+          title="Keyboard shortcuts (?)"
+          className="w-9 h-9 rounded-xl bg-[#1a1a2e]/90 backdrop-blur-xl border border-white/[0.08] shadow-lg text-gray-400 hover:text-white hover:bg-[#1a1a2e] transition-all flex items-center justify-center"
         >
           <svg className="w-[17px] h-[17px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
           </svg>
         </button>
-      )}
+      </div>
 
       {/* Pending location hint banner */}
       {pendingDestination && (
