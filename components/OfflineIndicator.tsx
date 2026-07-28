@@ -52,7 +52,27 @@ export default function OfflineIndicator() {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5}
               d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
           </svg>
-          <span>You&apos;re offline — map data is cached</span>
+          <span className="normal-case">You&apos;re offline — viewing cached map tiles</span>
+          <button
+            onClick={() => {
+              if (navigator.onLine) {
+                setIsOffline(false);
+                setShowBackOnline(true);
+                setTimeout(() => setShowBackOnline(false), 3500);
+              } else {
+                fetch("/favicon.ico", { cache: "no-store", mode: "no-cors" })
+                  .then(() => {
+                    setIsOffline(false);
+                    setShowBackOnline(true);
+                    setTimeout(() => setShowBackOnline(false), 3500);
+                  })
+                  .catch(() => {});
+              }
+            }}
+            className="ml-2 px-2 py-0.5 rounded bg-black/10 hover:bg-black/20 text-[10px] font-extrabold transition-colors normal-case"
+          >
+            Check Connection
+          </button>
         </>
       ) : (
         <>
