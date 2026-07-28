@@ -116,6 +116,32 @@ const MyLocationButton = ({ onLocate }: { onLocate: (pos: [number, number]) => v
   );
 };
 
+const ResetViewButton = () => {
+  const map = useMap();
+  const handleReset = () => {
+    map.flyTo([-19.4975, 29.8322], 16, { animate: true, duration: 1 });
+  };
+
+  return (
+    <div
+      style={{ position: "absolute", bottom: 44, right: 16, zIndex: 1000 }}
+      onMouseDown={(e) => e.stopPropagation()}
+      onDoubleClick={(e) => e.stopPropagation()}
+    >
+      <button
+        onClick={handleReset}
+        title="Reset view to main campus"
+        aria-label="Reset view to campus center"
+        className="w-10 h-10 rounded-xl shadow-lg border border-white/[0.08] flex items-center justify-center transition-all bg-[#1a1a2e]/90 backdrop-blur-xl text-gray-300 hover:text-white hover:bg-[#1a1a2e]"
+      >
+        <svg className="w-[18px] h-[18px]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+      </button>
+    </div>
+  );
+};
+
 export default function Map({
   searchQuery,
   activeFilter,
@@ -199,6 +225,7 @@ export default function Map({
       <MyLocationButton onLocate={(pos) => {
         // Currently just pans the map — full GPS flow remains via handleGetDirections
       }} />
+      <ResetViewButton />
 
       <TileLayer
         key={activeLayer.name}
