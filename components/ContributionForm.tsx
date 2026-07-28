@@ -96,14 +96,26 @@ export default function ContributionForm({
           </div>
 
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block mb-1.5">
-              Details
-            </label>
+            <div className="flex items-center justify-between mb-1.5">
+              <label className="text-[10px] font-bold uppercase tracking-wider text-gray-500 block">
+                Details
+              </label>
+              <span className={`text-[10px] font-mono ${content.length > 280 ? "text-amber-400" : "text-gray-500"}`}>
+                {content.length}/300
+              </span>
+            </div>
             <textarea
               rows={3}
+              maxLength={300}
               placeholder="e.g. Quiet study spots on 2nd floor near sockets..."
               value={content}
               onChange={(e) => setContent(e.target.value)}
+              onKeyDown={(e) => {
+                if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+                  e.preventDefault();
+                  handleSubmit(e);
+                }
+              }}
               className="w-full bg-white/[0.05] border border-white/[0.08] rounded-xl p-3 text-xs text-white placeholder-gray-600 outline-none focus:border-blue-500/40 resize-none"
             />
           </div>
