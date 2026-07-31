@@ -73,12 +73,17 @@ export default function AICampusAssistant({ onFlyTo }: AICampusAssistantProps) {
   const sendMessage = async (text: string) => {
     if (!text.trim() || isLoading) return;
 
-    const userMsg: Message = { id: crypto.randomUUID(), role: "user", content: text.trim() };
+    const safeId = typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+    const userMsg: Message = { id: safeId, role: "user", content: text.trim() };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsLoading(true);
 
-    const assistantMsgId = crypto.randomUUID();
+    const assistantMsgId = typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
     setMessages((prev) => [
       ...prev,
       { id: assistantMsgId, role: "assistant", content: "", isStreaming: true },
