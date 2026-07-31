@@ -4,6 +4,13 @@
  * and scheduling local/push notifications for timetable events.
  */
 
+export function getNotificationSupportStatus(): { supported: boolean; permission: NotificationPermission } {
+  if (typeof window === "undefined" || !("Notification" in window)) {
+    return { supported: false, permission: "denied" };
+  }
+  return { supported: true, permission: Notification.permission };
+}
+
 export async function requestNotificationPermission(): Promise<NotificationPermission> {
   if (typeof window === "undefined" || !("Notification" in window)) {
     return "denied";
