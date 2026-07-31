@@ -67,3 +67,8 @@ export const MAP_LAYERS = [
     maxZoom: 18
   }
 ];
+
+/** Retrieve the default selected tile layer object */
+export function getDefaultMapLayer() {
+  return MAP_LAYERS.find((l) => (l as { checked?: boolean }).checked) ?? MAP_LAYERS[0];
+}
