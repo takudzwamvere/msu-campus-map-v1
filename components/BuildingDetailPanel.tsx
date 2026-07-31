@@ -48,6 +48,8 @@ export default function BuildingDetailPanel({
         setContributions(data);
         setLoading(false);
       });
+      // Focus panel for accessibility
+      setTimeout(() => panelRef.current?.focus(), 50);
     } else {
       setIsVisible(false);
     }
@@ -93,6 +95,7 @@ export default function BuildingDetailPanel({
       {/* Panel */}
       <div
         ref={panelRef}
+        tabIndex={-1}
         role="dialog"
         aria-label={`${building.Building} details`}
         aria-modal="true"
