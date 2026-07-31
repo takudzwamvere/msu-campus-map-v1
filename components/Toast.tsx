@@ -17,7 +17,11 @@ export default function Toast({ message, onDismiss }: ToastProps) {
   if (!message) return null;
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 z-[7000] pointer-events-auto animate-in fade-in slide-in-from-top-2 duration-300">
+    <div
+      role="alert"
+      aria-live="assertive"
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-[7000] pointer-events-auto animate-in fade-in slide-in-from-top-2 duration-300"
+    >
       <div className="flex items-center gap-3 bg-red-500/15 backdrop-blur-xl border border-red-500/30 text-red-300 px-4 py-3 rounded-2xl shadow-2xl shadow-black/50 max-w-[90vw] md:max-w-md">
         <svg className="w-4 h-4 shrink-0 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
