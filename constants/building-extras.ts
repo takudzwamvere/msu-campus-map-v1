@@ -140,3 +140,12 @@ export function getBuildingExtras(buildingName: string): BuildingExtras {
   );
   return partialKey ? BUILDING_EXTRAS[partialKey] : {};
 }
+
+/** Check if supplementary extras exist for a building */
+export function hasBuildingExtras(buildingName: string): boolean {
+  if (BUILDING_EXTRAS[buildingName]) return true;
+  const lower = buildingName.toLowerCase();
+  return Object.keys(BUILDING_EXTRAS).some((k) =>
+    k.toLowerCase().includes(lower) || lower.includes(k.toLowerCase())
+  );
+}
