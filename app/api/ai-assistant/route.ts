@@ -41,7 +41,10 @@ function mockResponse(message: string): string {
   if (m.includes("admin") || m.includes("registrar") || m.includes("record") || m.includes("finance")) return MOCK_RESPONSES.admin;
   if (m.includes("pool") || m.includes("swim")) return MOCK_RESPONSES.pool;
   if (m.includes("health") || m.includes("clinic") || m.includes("sick") || m.includes("doctor") || m.includes("pharmacy")) return MOCK_RESPONSES.health;
-  if (m.includes("sport") || m.includes("gym") || m.includes("gym") || m.includes("exercise")) return MOCK_RESPONSES.sports;
+  if (m.includes("sport") || m.includes("gym") || m.includes("exercise") || m.includes("fitness")) return MOCK_RESPONSES.sports;
+  if (m.includes("timetable") || m.includes("class") || m.includes("schedule") || m.includes("lecture")) {
+    return `You can use the Timetable Manager tool from the main sidebar to add your class schedule and get navigation routes straight to your lectures!`;
+  }
   return MOCK_RESPONSES.default;
 }
 
