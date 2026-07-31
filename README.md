@@ -6,9 +6,9 @@ This is an interactive, modern campus map application for Midlands State Univers
 
 ## 🚀 Key Features & Capabilities
 
-- **📱 Progressive Web App (PWA)**: Offline tile caching via Workbox, Web App Manifest, offline fallback screen, and PWA install prompt.
-- **⌨️ Keyboard Shortcuts & Quick Search**: Press `⌘K` or `/` to focus search instantly; press `?` for interactive hotkey reference modal.
-- **🏛️ Rich Building Detail Panels**: Slide-in info drawer with opening hours, capacity utilization meters, amenities chips (Wi-Fi, Wheelchair Accessibility, Floor counts), and quick location sharing.
+- **📱 Progressive Web App (PWA)**: Offline tile caching via Workbox, Web App Manifest, offline fallback screen, PWA install prompt, and API route caching.
+- **⌨️ Keyboard Shortcuts & Accessibility**: Press `⌘K` or `/` to focus search; press `?` for hotkey reference modal; full `Escape` key dismiss support across all panels & forms.
+- **🏛️ Rich Building Detail Panels**: Slide-in info drawer with opening hours, capacity utilization meters, amenities chips (Wi-Fi, Wheelchair Accessibility, Floor counts), safe clipboard sharing, and keyboard focus management.
 - **🤖 Streaming AI Campus Assistant**: Intelligent conversational assistant powered by AI with campus knowledge graph integration that auto-pans and highlights destinations.
 - **📅 Timetable Manager & JSON Export**: Class schedule manager with day filtering, walking distance alerts, countdown timers, and full `.json` schedule export / backup.
 - **🔥 Anonymous Crowdedness Heatmap**: Privacy-first opt-in presence signals aggregated into dynamic heatmaps.
