@@ -122,8 +122,12 @@ export default function TimetableManager({ isOpen, onClose, onGetDirections, use
     const building = CAMPUS_BUILDINGS.find((b) => b.Building === form.buildingName);
     if (!building) return setFormError("Building not found.");
 
+    const entryId = typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+      ? crypto.randomUUID()
+      : `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+
     const newEntry: ClassEntry = {
-      id: crypto.randomUUID(),
+      id: entryId,
       subjectName: form.subjectName.trim(),
       buildingName: form.buildingName,
       lat: building.Latitude,
