@@ -830,3 +830,20 @@ export const CAMPUS_BUILDINGS: CampusBuilding[] = [
         "Type": "Cattle"
     }
 ];
+
+/** Search helper: find building by name (exact or case-insensitive partial match) */
+export function findBuildingByName(query: string): CampusBuilding | undefined {
+  if (!query.trim()) return undefined;
+  const q = query.trim().toLowerCase();
+  return (
+    CAMPUS_BUILDINGS.find((b) => b.Building.toLowerCase() === q) ??
+    CAMPUS_BUILDINGS.find((b) => b.Building.toLowerCase().includes(q))
+  );
+}
+
+/** Filter helper: get all buildings matching a given type string */
+export function getBuildingsByType(type: string): CampusBuilding[] {
+  if (!type.trim()) return [];
+  const t = type.trim().toLowerCase();
+  return CAMPUS_BUILDINGS.filter((b) => (b.Type ?? "").toLowerCase() === t);
+}
