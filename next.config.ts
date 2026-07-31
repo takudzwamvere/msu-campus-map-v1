@@ -49,6 +49,16 @@ const withPWA = withPWAInit({
           networkTimeoutSeconds: 5,
         },
       },
+      // ── Campus Events & Safety Reports — network-first fallback ────────
+      {
+        urlPattern: /\/api\/(events|report)/,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "campus-dynamics-api",
+          expiration: { maxEntries: 10, maxAgeSeconds: 60 * 60 * 24 * 3 },
+          networkTimeoutSeconds: 4,
+        },
+      },
       // ── Next.js static assets — stale-while-revalidate ────────────────
       {
         urlPattern: /\/_next\/static\/.*/i,
