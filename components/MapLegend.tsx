@@ -1,10 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CATEGORY_STYLES } from "../constants/campus-styles";
 
 export default function MapLegend() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   return (
     <div className="flex flex-col items-end p-4 pb-20 md:pb-4 gap-3">
@@ -20,6 +29,7 @@ export default function MapLegend() {
           <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400">Map Legend</h3>
           <button
             onClick={() => setIsOpen(false)}
+            aria-label="Close map legend"
             className="text-gray-500 hover:text-white transition-colors p-0.5"
           >
             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
@@ -58,6 +68,8 @@ export default function MapLegend() {
       {/* FAB Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-label="Toggle map legend"
         className={`w-10 h-10 rounded-xl shadow-lg shadow-black/30 flex items-center justify-center transition-all duration-200 pointer-events-auto border border-white/[0.08] ${
           isOpen
             ? "bg-white/10 text-gray-400"
