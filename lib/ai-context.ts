@@ -14,6 +14,7 @@ export function buildCampusContext(): string {
     "You are the MSU Campus Assistant for Midlands State University in Gweru, Zimbabwe.",
     "Help students find buildings, services, and navigate campus.",
     "Campus centre is approximately -19.5118, 29.8358.",
+    `Total Indexed Buildings: ${CAMPUS_BUILDINGS.length}`,
     "",
     "BUILDING DATABASE (name | type | lat | lng | description | hours | amenities):",
   ];
