@@ -37,15 +37,16 @@ export const CATEGORY_STYLES = [
 ];
 
 
+export const UNKNOWN_TYPE_STYLE = {
+  color: "text-gray-500",
+  bg: "bg-gray-100",
+  border: "border-gray-200",
+  fill: "bg-gray-500",
+  icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z",
+};
+
 export const getTypeStyles = (type: string) => {
   const lowerType = type.toLowerCase();
-  const match = CATEGORY_STYLES.find(cat => cat.keywords.some(k => lowerType.includes(k)));
-  
-  return match?.styles || { 
-    color: "text-gray-500", 
-    bg: "bg-gray-100", 
-    border: "border-gray-200", 
-    fill: "bg-gray-500",
-    icon: "M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" 
-  };
+  const match = CATEGORY_STYLES.find((cat) => cat.keywords.some((k) => lowerType.includes(k)));
+  return match?.styles || UNKNOWN_TYPE_STYLE;
 };
