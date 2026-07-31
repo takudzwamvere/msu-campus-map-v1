@@ -22,11 +22,25 @@ export default function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
     onClose();
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") handleClose();
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   if (!mounted || !isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[6000] flex items-center justify-center px-4 bg-black/70 backdrop-blur-sm">
-      <div className="bg-[#1a1a2e] border border-white/[0.08] shadow-2xl shadow-black/60 w-full max-w-[420px] rounded-2xl overflow-hidden">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Welcome to MSU Campus Map"
+        className="bg-[#1a1a2e] border border-white/[0.08] shadow-2xl shadow-black/60 w-full max-w-[420px] rounded-2xl overflow-hidden"
+      >
 
         {/* Header */}
         <div className="p-8 pb-0 text-center">
