@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MAP_LAYERS } from "../constants/map-layers";
 
 interface MapLayerControlProps {
@@ -29,6 +29,15 @@ export default function MapLayerControl({
   onMode3dToggle,
 }: MapLayerControlProps) {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   const getPreviewStyle = (name: string) => {
     if (name.includes("Satellite") || name.includes("Hybrid")) return "bg-emerald-900 overflow-hidden relative";
