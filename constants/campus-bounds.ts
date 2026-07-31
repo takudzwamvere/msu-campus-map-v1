@@ -18,3 +18,9 @@ export const isWithinCampus = (lat: number, lng: number): boolean =>
   lat <= CAMPUS_BOUNDS.maxLat &&
   lng >= CAMPUS_BOUNDS.minLng &&
   lng <= CAMPUS_BOUNDS.maxLng;
+
+/** Calculate center coordinate of campus bounding box */
+export const getCampusCenterCoords = (): [number, number] => [
+  (CAMPUS_BOUNDS.minLat + CAMPUS_BOUNDS.maxLat) / 2,
+  (CAMPUS_BOUNDS.minLng + CAMPUS_BOUNDS.maxLng) / 2,
+];
