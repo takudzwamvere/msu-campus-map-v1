@@ -77,7 +77,7 @@ export default function MapRouting({
     return () => {
       map.removeControl(routingControl);
     };
-  }, [map, userLocation, destination]);
+  }, [map, userLocation, destination, onRouteSummary]);
 
   return null;
 }
