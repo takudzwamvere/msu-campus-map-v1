@@ -317,9 +317,10 @@ export default function BuildingDetailPanel({
               if (navigator.share) {
                 navigator.share({ title: building.Building, url }).catch(() => {});
               } else {
-                navigator.clipboard.writeText(url);
-                setCopiedLink(true);
-                setTimeout(() => setCopiedLink(false), 2000);
+                navigator.clipboard.writeText(url).then(() => {
+                  setCopiedLink(true);
+                  setTimeout(() => setCopiedLink(false), 2000);
+                }).catch(() => {});
               }
             }}
             title="Share or copy building link"
