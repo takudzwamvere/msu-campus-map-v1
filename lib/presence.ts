@@ -60,3 +60,10 @@ export function stopPresence(): void {
     intervalId = null;
   }
 }
+
+/**
+ * Check if active presence signal reporting is currently running.
+ */
+export function isPresenceActive(): boolean {
+  return intervalId !== null;
+}
