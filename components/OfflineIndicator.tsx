@@ -11,6 +11,8 @@ export default function OfflineIndicator() {
     // Set initial state
     setIsOffline(!navigator.onLine);
 
+    let backOnlineTimer: ReturnType<typeof setTimeout>;
+
     const handleOffline = () => {
       setIsOffline(true);
       setWasOffline(true);
@@ -21,8 +23,8 @@ export default function OfflineIndicator() {
       setIsOffline(false);
       if (wasOffline) {
         setShowBackOnline(true);
-        const t = setTimeout(() => setShowBackOnline(false), 3500);
-        return () => clearTimeout(t);
+        clearTimeout(backOnlineTimer);
+        backOnlineTimer = setTimeout(() => setShowBackOnline(false), 3500);
       }
     };
 
@@ -31,6 +33,7 @@ export default function OfflineIndicator() {
     return () => {
       window.removeEventListener("offline", handleOffline);
       window.removeEventListener("online", handleOnline);
+      clearTimeout(backOnlineTimer);
     };
   }, [wasOffline]);
 
