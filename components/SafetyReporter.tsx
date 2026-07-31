@@ -97,7 +97,7 @@ export default function SafetyReporter({ enabled, isPinDropMode, onPinDropped }:
                     {report.category}
                   </span>
                   <span className="text-[10px] text-gray-500">
-                    Confirmed by {report.confirmedCount}
+                    Confirmed by {report.confirmedCount} {report.confirmedCount === 1 ? "person" : "people"}
                   </span>
                 </div>
                 {report.description && (
