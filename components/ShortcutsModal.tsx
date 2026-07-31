@@ -39,9 +39,13 @@ export default function ShortcutsModal({ isOpen, onClose }: ShortcutsModalProps)
       role="dialog"
       aria-modal="true"
       aria-labelledby="shortcuts-dialog-title"
+      onClick={onClose}
       className="fixed inset-0 z-[6000] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200"
     >
-      <div className="bg-[#1a1a2e] border border-white/[0.1] shadow-2xl shadow-black/80 w-full max-w-md rounded-2xl overflow-hidden">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="bg-[#1a1a2e] border border-white/[0.1] shadow-2xl shadow-black/80 w-full max-w-md rounded-2xl overflow-hidden"
+      >
         {/* Modal Header */}
         <div className="px-6 py-5 border-b border-white/[0.08] flex items-center justify-between">
           <div className="flex items-center gap-3">
