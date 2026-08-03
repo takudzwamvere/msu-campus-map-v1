@@ -52,7 +52,7 @@ export default function WelcomeModal({ isOpen, onClose }: WelcomeModalProps) {
           </div>
           <h2 className="text-2xl font-bold text-white mb-2 tracking-tight">MSU Campus Map</h2>
           <p className="text-gray-500 text-sm leading-relaxed">
-            Explore buildings, and get directions across the Gweru campus.
+            Explore buildings, find lecture halls, and get directions across the Gweru campus.
           </p>
         </div>
 
